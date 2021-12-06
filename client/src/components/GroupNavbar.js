@@ -72,6 +72,7 @@ const GroupNavbar = ({ history, language, match, allowNavigation }) => {
     activeTab === "activities",
     activeTab === "members",
     activeTab === "chat",
+    activeTab === "Biblioteca",
   ];
   return (
     <MuiThemeProvider theme={muiTheme}>
@@ -140,6 +141,34 @@ const GroupNavbar = ({ history, language, match, allowNavigation }) => {
               <i className="fas fa-envelope groupNavbarIcon" />
             ) : (
               <i className="far fa-envelope groupNavbarIcon" />
+            )
+          }
+        />
+        <BottomNavigationAction
+          /*creazione di biblioteca all'interno della barra di navigazione */
+          value="Biblioteca"
+          /*boh, non so*/
+          disabled={disabled}
+          /*mette la scritta "Biblioteca" sotto l'icona*/
+          label={texts.biblioTab}
+          /*Qua è dove va a prendere l'icona*/
+          icon={
+            flags[5] ? (
+              /*è la parte before, quando si clicca l'immagine*/
+              <img
+                alt=""
+                src={Images.bibliotecaIcon}
+                /*classname bibliotecaIcon presente all'interno di AllStyles.css*/
+                className="bibliotecaIcon"
+              />
+            ) : (
+              /*scr è la fonte dell'immagine che andrà a cercare, all'interno di Images.js, cercherà l'icona*/
+              <img
+                alt=""
+                src={Images.bibliotecaIcon}
+                /*classname bibliotecaIcon presente all'interno di AllStyles.css*/
+                className="bibliotecaIcon"
+              />
             )
           }
         />

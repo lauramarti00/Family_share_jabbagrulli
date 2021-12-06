@@ -27,6 +27,16 @@ const GroupChat = Loadable({
   loader: () => import("./GroupChat"),
   loading: () => <div />,
 });
+/* GroupBiblioteca.js
+const GroupBiblioteca = Loadable({
+  loader: () => import("./GroupBiblioteca"),
+  loading: () => <div />,
+});*/
+/*test */
+const GroupBiblioteca = Loadable({
+  loader: () => import("./GroupBiblioteca"),
+  loading: () => <div />,
+});
 
 const getGroupMembers = (groupId) => {
   return axios
@@ -149,6 +159,16 @@ export default class GroupMainScreen extends React.Component {
             path={`${currentPath}/calendar`}
             render={(props) => (
               <GroupCalendar
+                {...props}
+                group={group}
+                userIsAdmin={userIsAdmin}
+              />
+            )}
+          />
+          <Route
+            path={`${currentPath}/Biblioteca`} //indirizzo della pagina Biblioteca
+            render={(props) => (
+              <GroupBiblioteca //renderizza dal caricamento sopra
                 {...props}
                 group={group}
                 userIsAdmin={userIsAdmin}

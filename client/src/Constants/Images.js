@@ -53,6 +53,7 @@ const Images = {
   policy: require("../images/privacy-policy.png"),
   policyAccepted: require("../images/privacy-policy-accepted.png"),
   infoCircleRegular: require("../images/info-circle-regular.png"),
+  bibliotecaIcon: require("../images/biblioteca.png"),
   userFriendsRegular: require("../images/user-friends-regular.png"),
   mapMarkerAltRegular: require("../images/mapMarkerAltRegular.png"),
   thumbtackRegular: require("../images/thumbtackRegular.png"),

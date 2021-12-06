@@ -109,6 +109,11 @@ const CreateActivityScreen = Loadable({
   loader: () => import("./components/CreateActivityScreen"),
   loading: () => Loading,
 });
+/*carico CreateBookScreen.js*/
+const CreateBookScreen = Loadable({
+  loader: () => import("./components/CreateBookScreen"),
+  loading: () => Loading,
+});
 const CreatePlanScreen = Loadable({
   loader: () => import("./components/CreatePlanScreen"),
   loading: () => Loading,
@@ -312,6 +317,12 @@ class App extends React.Component {
                 exact
                 path="/groups/:groupId/activities/create"
                 component={CreateActivityScreen}
+              />
+              {/*path per reindirizzare alla creazione di un libro*/}
+              <PrivateRoute
+                exact
+                path="/groups/:groupId/aggiungilibro/create"
+                component={CreateBookScreen}
               />
               <PrivateRoute
                 exact
