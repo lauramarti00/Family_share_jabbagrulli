@@ -119,6 +119,7 @@ class GroupActivities extends React.Component {
     this.setState({ showAddOptions: !showAddOptions });
   };
 
+  /*visualizza le attività nella biblioteca*/
   renderActivities = () => {
     const { group, activities } = this.state;
     const { group_id: groupId } = group;
@@ -158,7 +159,7 @@ class GroupActivities extends React.Component {
 
   /*il bottone per esportare in agenda tutto, roba inutile che */
   
-  /*
+  
   handleExport = () => {
     const { group } = this.state;
     const { group_id: groupId } = group;
@@ -173,7 +174,6 @@ class GroupActivities extends React.Component {
       });
   };
 
-  */
 
   handlePendingRequests = () => {
     const { history } = this.props;
@@ -334,7 +334,7 @@ class GroupActivities extends React.Component {
         <div style={{ paddingBottom: "6rem" }}>
           {fetchedData && (
             <div id="groupActivitiesContainer" className="horizontalCenter">
-              <h1 className="">{texts.activitiesHeader}</h1>
+              <h1 className="">{"Biblioteca"}</h1>
               {this.renderActivities()}
             </div>
           )}

@@ -1169,6 +1169,14 @@ const en = {
     name: "Name of the activity",
     location: "Location (optional)",
   },
+  /*testo per i libri*/
+  createBookInformation: {
+    link: "Link (optional)",
+    color: "Color of the activity",
+    description: "Description (optional)",
+    name: "Name of the book",
+    location: "Location (optional)",
+  },
   createActivityDates: {
     header: "Select one or more days",
     repetition: "Repetition",
@@ -2456,6 +2464,14 @@ const nl = {
     description: "Beschrijving (optioneel)",
     name: "Naam van de activiteit",
     location: "Plaats (optioneel)",
+  },
+  /*testo per i libri*/
+  createBookInformation: {
+    link: "Link (optional)",
+    color: "Color of the activity",
+    description: "Description (optional)",
+    name: "Name of the book",
+    location: "Location (optional)",
   },
   createActivityDates: {
     header: "Selecteer 1 of meerdere dagen",
@@ -3746,6 +3762,14 @@ const it = {
     description: "Descrizione (facoltativo)",
     name: "Titolo dell'attività",
     location: "Posizione (facoltativo)",
+  },
+  /*testo per i libri*/
+  createBookInformation: {
+    link: "Foto e immagini del libro",
+    color: "Colore del libro(?)",
+    description: "Descrizione (optional)",
+    name: "Titolo del libro",
+    location: "Autore",
   },
   createActivityDates: {
     header: "Seleziona uno o più giorni",
@@ -5038,6 +5062,14 @@ const el = {
     description: "Περιγραφή (προαιρετική)",
     name: "Όνομα δραστηριότητας",
     location: "Τοποθεσία (προαιρετική)",
+  },
+  /*testo per i libri*/
+  createBookInformation: {
+    link: "Link (optional)",
+    color: "Color of the activity",
+    description: "Description (optional)",
+    name: "Name of the book",
+    location: "Location (optional)",
   },
   createActivityDates: {
     header: "Επιλέξτε μία ή περισσότερες ημέρες",
@@ -6373,6 +6405,14 @@ const hu = {
     description: "Leírás (opcionális)",
     name: "Nevezze meg a tevékenységet",
     location: "Helyszín (opcionális)",
+  },
+  /*testo per i libri*/
+  createBookInformation: {
+    link: "Link (optional)",
+    color: "Color of the activity",
+    description: "Description (optional)",
+    name: "Name of the book",
+    location: "Location (optional)",
   },
   createActivityDates: {
     header: "Jelöljön meg egy vagy több napot",
@@ -7714,6 +7754,14 @@ const fr = {
     description: "Description (facultatif)",
     name: "Nom de l'activité",
     location: "Lieu (facultatif)",
+  },
+  /*testo per i libri*/
+  createBookInformation: {
+    link: "Link (optional)",
+    color: "Color of the activity",
+    description: "Description (optional)",
+    name: "Name of the book",
+    location: "Location (optional)",
   },
   createActivityDates: {
     header: "Sélectionnez un ou plusieurs jours",

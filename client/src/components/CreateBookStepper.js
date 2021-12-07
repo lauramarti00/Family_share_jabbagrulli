@@ -15,7 +15,7 @@ import Button from "@material-ui/core/Button";
 import moment from "moment";
 import axios from "axios";
 import withLanguage from "./LanguageContext";
-import CreateActivityInformation from "./CreateActivityInformation";
+import CreateBookInformation from "./CreateBookInformation";
 import CreateActivityDates from "./CreateActivityDates";
 import CreateActivityTimeslots from "./CreateActivityTimeslots";
 import Texts from "../Constants/Texts";
@@ -326,7 +326,7 @@ class CreateBookStepper extends React.Component {
     switch (activeStep) {
       case 0:
         return (
-          <CreateActivityInformation
+          <CreateBookInformation
             {...information}
             handleSubmit={this.handleInformationSubmit}
           />
