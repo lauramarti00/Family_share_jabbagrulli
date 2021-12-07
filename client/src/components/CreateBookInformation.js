@@ -15,9 +15,9 @@ class CreateBookInformation extends React.Component {
       description,
       cost,
       color,
-      link,
+      //link,
     } = this.props;
-    this.state = { color, cost, description, link, location, name };
+    this.state = { color, cost, description, location, name };
     handleSubmit(this.state, this.validate(this.state));
     autosize(document.querySelectorAll("textarea"));
   }
@@ -66,7 +66,7 @@ class CreateBookInformation extends React.Component {
 
   render() {
     const { language } = this.props;
-    const { name, color, description, location, link } = this.state;
+    const { name, color, description, location } = this.state;
     const texts = Texts[language].createBookInformation;
     const rowStyle = { minHeight: "7rem" };
     return (
@@ -206,7 +206,7 @@ CreateBookInformation.propTypes = {
   color: PropTypes.string,
   handleSubmit: PropTypes.func,
   language: PropTypes.string,
-  link: PropTypes.string,
+  //link: PropTypes.string,
 };
 
 export default withLanguage(CreateBookInformation);

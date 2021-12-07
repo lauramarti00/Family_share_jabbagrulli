@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import withLanguage from "./LanguageContext";
 import Texts from "../Constants/Texts";
 import ActivityOptionsModal from "./OptionsModal";
-import ActivityListItem from "./ActivityListItem";
+import BookListItem from "./BookListItem";
 import PlanListItem from "./PlanListItem";
 import ConfirmDialog from "./ConfirmDialog";
 import Log from "./Log";
@@ -127,7 +127,7 @@ class GroupActivities extends React.Component {
       <ul>
         {activities.map((activity, index) => (
           <li key={index}>
-            <ActivityListItem activity={activity} groupId={groupId} />
+            <BookListItem activity={activity} groupId={groupId} />
           </li>
         ))}
       </ul>
