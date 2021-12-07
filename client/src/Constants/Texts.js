@@ -837,6 +837,16 @@ const en = {
     newPlan: "Advanced planning",
     newActivity: "New activity",
   },
+  /*usare questo per editare la biblioteca*/
+  groupBiblioteca: {
+    exportConfirm: "Are you sure you want to export the group agenda?",
+    activitiesHeader: "Activities of the group",
+    plansHeader: "Pending plans",
+    export: "Export agenda",
+    newPlan: "Advanced planning",
+    newActivity: "New activity",
+    addbook:"Aggiungi libro"
+  },
   activityListItem: {
     every: "Every",
     of: "of",
@@ -863,6 +873,7 @@ const en = {
     membersTab: "Members",
     infoTab: "About",
     calendarTab: "Calendar",
+    biblioTab: "Biblioteca",
   },
   groupMembersAdminOptions: {
     invite: "Invite people",
@@ -3446,6 +3457,7 @@ const it = {
     membersTab: "Membri",
     infoTab: "Info",
     calendarTab: "Calendario",
+    biblioTab:"Bilioteca",
   },
   groupMembersAdminOptions: {
     invite: "Invita altre persone",
