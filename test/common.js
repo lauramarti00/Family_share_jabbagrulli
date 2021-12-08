@@ -6,5 +6,5 @@ const server = require('../src/index')
 chai.should()
 chai.use(chaiHttp)
 
-exports.chai = chai 
-exports.server = server 
+exports.chai = chai
+exports.server = server

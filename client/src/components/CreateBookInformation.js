@@ -4,6 +4,8 @@ import autosize from "autosize";
 import { CirclePicker } from "react-color";
 import withLanguage from "./LanguageContext";
 import Texts from "../Constants/Texts";
+import * as path from "lodash.get";
+
 
 class CreateBookInformation extends React.Component {
   constructor(props) {
@@ -15,9 +17,9 @@ class CreateBookInformation extends React.Component {
       description,
       cost,
       color,
-      //link,
+      image,
     } = this.props;
-    this.state = { color, cost, description, location, name };
+    this.state = { color, cost, description, location, name, image, };
     handleSubmit(this.state, this.validate(this.state));
     autosize(document.querySelectorAll("textarea"));
   }
@@ -64,9 +66,11 @@ class CreateBookInformation extends React.Component {
     );
   };
 
+  //----------------------------------------------------------
+
   render() {
     const { language } = this.props;
-    const { name, color, description, location } = this.state;
+    const { name, color, description, location, image, } = this.state;
     const texts = Texts[language].createBookInformation;
     const rowStyle = { minHeight: "7rem" };
     return (
@@ -165,6 +169,14 @@ class CreateBookInformation extends React.Component {
                   onChange={this.handleImageChange}
                 />
               )}
+              {/*da sistemare, non so come posizionarlo*/}
+              <div className="line-2-10">
+                <img
+                  src={path(image, ["path"])}
+                  alt="child profile logo"
+                  className="horizontal square right"
+                />
+                </div>
             </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ import Texts from "../Constants/Texts";
 import withLanguage from "./LanguageContext";
 import Log from "./Log";
 
+
 const getUsersChildren = (userId) => {
   return axios
     .get(`/api/users/${userId}/children`)
@@ -35,8 +36,8 @@ const getTimeslots = (groupId, activityId) => {
 class BookListItem extends React.Component {
   constructor(props) {
     super(props);
-    const { activity } = this.props;
-    this.state = { fetchedTimeslots: false, activity };
+    const { activity, } = this.props;
+    this.state = { fetchedTimeslots: false, activity, image:"", };
   }
 
   async componentDidMount() {
@@ -143,29 +144,37 @@ class BookListItem extends React.Component {
             </div>
           )}
           <div className="col-2-10">
-            <i
+              
+            <img
+              src={activity.image}
+              alt="child profile logo"
+              className="horizontalCenter profilePhoto"
+            />
+        
+            {/*<i
               style={{
                 fontSize: "3rem",
                 color: activity.color,
               }}
               className="fas fa-certificate center"
-            />
+            />*/}
           </div>
           <div
             className="col-6-10"
             style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }}
           >
             <div className="verticalCenter">
+              {/*mi da il titolo del libro*/}
               <div className="row no-gutters">
                 <h1>{activity.name}</h1>
               </div>
+              {/*mi da l'autore del libro*/}
               <div className="row no-gutters">
-              <div className="row no-gutters">
-              <h1>{activity.location}</h1>
-            </div>
+                <h1>{activity.location}</h1>
               </div>
             </div>
           </div>
+          
           <div
             className="col-2-10"
             style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }}

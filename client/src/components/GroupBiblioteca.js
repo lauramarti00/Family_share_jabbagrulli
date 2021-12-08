@@ -11,6 +11,7 @@ import PlanListItem from "./PlanListItem";
 import ConfirmDialog from "./ConfirmDialog";
 import Log from "./Log";
 
+
 /*questo indica solamente come sono fatti i bottoni*/
 const styles = {
   /*bottone +*/
@@ -74,7 +75,7 @@ const fetchPlans = (groupId) => {
     });
 };
 
-class GroupActivities extends React.Component {
+class GroupBiblioteca extends React.Component {
   constructor(props) {
     super(props);
     const { group } = this.props;
@@ -119,7 +120,7 @@ class GroupActivities extends React.Component {
     this.setState({ showAddOptions: !showAddOptions });
   };
 
-  /*visualizza le attività nella biblioteca*/
+  /*visualizza le attività nella biblioteca, chiama la funzione BookListItem*/
   renderActivities = () => {
     const { group, activities } = this.state;
     const { group_id: groupId } = group;
@@ -128,6 +129,7 @@ class GroupActivities extends React.Component {
         {activities.map((activity, index) => (
           <li key={index}>
             <BookListItem activity={activity} groupId={groupId} />
+            
           </li>
         ))}
       </ul>
@@ -298,7 +300,8 @@ class GroupActivities extends React.Component {
                 alignItems: "center",
               }}
             >
-            {/*aggiungo un libro con this.add("aggiungilibro") -> vedi App.js*/}
+            {/*aggiungo un libro con this.add("aggiungilibro") -> vedi App.js
+               mi porta alla pagina CreateBookStepper(?)*/}
               <div className=" activitiesFabLabel">{"Aggiungi libro"}</div>
               <Fab
                 color="primary"
@@ -350,7 +353,7 @@ class GroupActivities extends React.Component {
   }
 }
 
-GroupActivities.propTypes = {
+GroupBiblioteca.propTypes = {
   group: PropTypes.object,
   userIsAdmin: PropTypes.bool,
   classes: PropTypes.object,
@@ -358,4 +361,4 @@ GroupActivities.propTypes = {
   history: PropTypes.object,
 };
 
-export default withStyles(styles)(withLanguage(GroupActivities));
+export default withStyles(styles)(withLanguage(GroupBiblioteca));
