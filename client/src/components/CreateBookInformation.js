@@ -170,7 +170,7 @@ class CreateBookInformation extends React.Component {
                 />
               )}
               {/*da sistemare, non so come posizionarlo*/}
-              <div className="line-2-10">
+              <div className="line-7-10">
                 <img
                   src={path(image, ["path"])}
                   alt="child profile logo"

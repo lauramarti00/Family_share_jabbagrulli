@@ -349,6 +349,7 @@ class CreateBookStepper extends React.Component {
             handleSubmit={this.handleTimeslotsSubmit}
           />
         );
+        
       default:
         return <div>Lorem Ipsum</div>;
     }

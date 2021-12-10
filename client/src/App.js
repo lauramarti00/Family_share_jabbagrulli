@@ -163,6 +163,19 @@ const SignUpScreen = Loadable({
   loading: () => Loading,
 });
 
+const CreateBookScreenVicky = Loadable({
+  loader: () => import("./components/CreateBookScreenVicky"),
+  loading: () => Loading,
+});
+const EditBookScreen = Loadable({
+  loader: () => import("./components/EditBookScreen"),
+  loading: () => Loading,
+});
+const CatalogoScreen = Loadable({
+  loader: () => import("./components/CatalogoScreen"),
+  loading: () => Loading,
+});
+
 axios.interceptors.request.use(
   (config) => {
     let userToken = "";
@@ -238,7 +251,12 @@ class App extends React.Component {
               <Route path="/signup" component={SignUpScreen} />
               <Route path="/login" component={LogInScreen} />
               <Route path="/faqs" component={FaqsScreen} />
-              <Route path="/forgotpsw" component={ForgotPasswordScreen} />
+              <Route path="/forgotpsw" component={ForgotPasswordScreen} />    
+              
+              <Route path="/createBook" component={CreateBookScreenVicky} />
+              <Route path="/editBook/:id" component={EditBookScreen} />
+              <Route path="/catalogo" component={CatalogoScreen} />
+
               <Route
                 path="/changepsw/:token"
                 component={ChangePasswordScreen}

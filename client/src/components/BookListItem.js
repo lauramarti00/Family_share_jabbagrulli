@@ -143,8 +143,8 @@ class BookListItem extends React.Component {
               <i className="fas fa-user-check" />
             </div>
           )}
+          {/*TO DO perchè activity.image non è nulla, devo passarmi da activity il path e non so come fare*/}
           <div className="col-2-10">
-              
             <img
               src={activity.image}
               alt="child profile logo"

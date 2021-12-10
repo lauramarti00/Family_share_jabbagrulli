@@ -49,6 +49,9 @@ if (process.env.NODE_ENV !== "production") {
   localStorage.setItem("debug", "families-share:*");
 }
 
+
+/*renderizza all'interno del root il Provider store e Router history .
+  Store sta nella cartella Store, histori sta sopra*/
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

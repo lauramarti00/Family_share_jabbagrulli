@@ -71,6 +71,8 @@ app.use('/api/profiles', require('./routes/profile-routes'))
 app.use('/api/children', require('./routes/child-routes'))
 app.use('/api/github', require('./routes/github-routes'))
 app.use('/api/community', require('./routes/community-routes'))
+// crea la root per book
+app.use('/api/book', require('./routes/book-routes'))
 
 if (config.util.getEnv('NODE_ENV') === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')))
