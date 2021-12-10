@@ -242,7 +242,7 @@ class CreateBookStepper extends React.Component {
     };
   };
 
-  //rimuovibile tranguillamente khiem puzza
+  /* rimuovibile tranguillamente khiem puzza
   formatDataToEvents = (information, dates, timeslots, groupId) => {
     const events = [];
     dates.selectedDays.forEach((date, index) => {
@@ -300,10 +300,12 @@ class CreateBookStepper extends React.Component {
     });
     return events;
   };
+  */
 
   // non ci serve
   handleContinue = () => {
       this.createActivity();// da mettere su create button
+      window.location = '/';
   };
 
   //deleta
@@ -317,17 +319,10 @@ class CreateBookStepper extends React.Component {
   //bottone ok
   handleInformationSubmit = (information) => {
     this.setState({ information });
+    //console.log("information")
+    //console.log(information)
   };
 
-  //non neccessario
-  handleDatesSubmit = (dates, wasValidated) => {
-    this.setState({ dates, stepWasValidated: wasValidated });
-  };
-
-  // non neccessario
-  handleTimeslotsSubmit = (timeslots, wasValidated) => {
-    this.setState({ timeslots, stepWasValidated: wasValidated });
-  };
 
   // da modificare
   getStepContent = () => {

@@ -33,9 +33,11 @@ class CreateBookInformation extends React.Component {
 
   handleChange = (event) => {
     const state = Object.assign({}, this.state);
-    const { title, value } = event.target;
+    //SE MODIFICO NAME CON TITLE
+    const { name, value } = event.target;
     const { handleSubmit } = this.props;
-    state[title] = value;
+    //SE MODIFICO NAME CON TITLE NON MI DA L'ANTEPRIMA DI SCRITTURA
+    state[name] = value;
     handleSubmit(state, this.validate(state));
     this.setState(state);
   };
@@ -200,7 +202,7 @@ class CreateBookInformation extends React.Component {
             <CirclePicker
               width="100%"
               color={color}
-              onChange={this.handleColorChange}
+              onChange={this.handleColorChange}handleSubmit
             />
           </div>
         </div>
@@ -217,7 +219,6 @@ CreateBookInformation.propTypes = {
   color: PropTypes.string,
   handleSubmit: PropTypes.func,
   language: PropTypes.string,
-  //link: PropTypes.string,
 };
 
 export default withLanguage(CreateBookInformation);
