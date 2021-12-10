@@ -12,20 +12,20 @@ class CreateBookInformation extends React.Component {
     super(props);
     const {
       handleSubmit,
-      name,
-      location,
+      title,
+      author,
       description,
       cost,
       color,
       image,
     } = this.props;
-    this.state = { color, cost, description, location, name, image, };
+    this.state = { color, cost, description, author, title, image, };
     handleSubmit(this.state, this.validate(this.state));
     autosize(document.querySelectorAll("textarea"));
   }
 
   validate = (state) => {
-    if (state.color && state.name) {
+    if (state.color && state.title) {
       return true;
     }
     return false;
@@ -33,9 +33,9 @@ class CreateBookInformation extends React.Component {
 
   handleChange = (event) => {
     const state = Object.assign({}, this.state);
-    const { name, value } = event.target;
+    const { title, value } = event.target;
     const { handleSubmit } = this.props;
-    state[name] = value;
+    state[title] = value;
     handleSubmit(state, this.validate(state));
     this.setState(state);
   };
@@ -70,7 +70,7 @@ class CreateBookInformation extends React.Component {
 
   render() {
     const { language } = this.props;
-    const { name, color, description, location, image, } = this.state;
+    const { title, color, description, author, image, } = this.state;
     const texts = Texts[language].createBookInformation;
     const rowStyle = { minHeight: "7rem" };
     return (
@@ -82,9 +82,9 @@ class CreateBookInformation extends React.Component {
           <div className="col-8-10">
             <input
               type="text"
-              name="name"
-              placeholder={texts.name}
-              value={name}
+              name="title"
+              placeholder="Titolo"
+              value={title}
               className="center"
               onChange={this.handleChange}
             />
@@ -115,9 +115,9 @@ class CreateBookInformation extends React.Component {
           <div className="col-8-10">
             <input
               type="text"
-              name="location"
-              placeholder={texts.location}
-              value={location}
+              name="author"
+              placeholder="Autore" 
+              value={author}
               className="center"
               onChange={this.handleChange}
             />
@@ -210,9 +210,8 @@ class CreateBookInformation extends React.Component {
 }
 
 CreateBookInformation.propTypes = {
-  name: PropTypes.string,
-  //da modificare location
-  location: PropTypes.string,
+  title: PropTypes.string,
+  author: PropTypes.string,
   description: PropTypes.string,
   cost: PropTypes.number,
   color: PropTypes.string,

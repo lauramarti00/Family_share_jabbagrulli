@@ -7,21 +7,16 @@ import {
   MuiThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import moment from "moment";
 import axios from "axios";
 import withLanguage from "./LanguageContext";
 import CreateBookInformation from "./CreateBookInformation";
-import CreateActivityDates from "./CreateActivityDates";
-import CreateActivityTimeslots from "./CreateActivityTimeslots";
 import Texts from "../Constants/Texts";
 import Log from "./Log";
 import LoadingSpinner from "./LoadingSpinner";
 
+// non ci server lo stepper
 const muiTheme = createMuiTheme({
   typography: {
     useNextVariants: true,
@@ -47,11 +42,14 @@ const muiTheme = createMuiTheme({
     },
   },
 });
+//
 
 const styles = (theme) => ({
   root: {
     width: "100%",
   },
+
+  // da togliere
   continueButton: {
     backgroundColor: "#00838F",
     marginTop: theme.spacing.unit,
@@ -63,6 +61,8 @@ const styles = (theme) => ({
     height: "4.2rem",
     width: "12rem",
   },
+  //
+
   createButton: {
     backgroundColor: "#ff6f00",
     position: "fixed",
@@ -76,6 +76,7 @@ const styles = (theme) => ({
       backgroundColor: "#ff6f00",
     },
   },
+  // da togliere
   stepLabel: {
     root: {
       color: "#ffffff",
@@ -97,6 +98,8 @@ const styles = (theme) => ({
       },
     },
   },
+  //
+  //non ci serve ???
   cancelButton: {
     backgroundColor: "#ffffff",
     marginTop: theme.spacing.unit,
@@ -138,37 +141,43 @@ class CreateBookStepper extends React.Component {
       "#607d8b",
     ];
     this.state = {
+      //non ci serve
       activeStep: 0,
       information: {
-        name: "",
+        title: "",
         color: colors[Math.floor(Math.random() * colors.length)],
         description: "",
-        location: "",
-        link: "",
+        author: "",
       },
+      //non ci serve
       dates: {
         selectedDays: [],
         repetition: false,
         repetitionType: "",
         lastSelect: new Date(),
       },
+      //non ci serve
       timeslots: {
         activityTimeslots: [],
         differentTimeslots: false,
       },
+      //non ci serve
       stepWasValidated: false,
+      //?? da vedere a cosa serve
       creating: false,
     };
   }
 
+  //non ci serve
   componentDidMount() {
     document.addEventListener("message", this.handleMessage, false);
   }
-
+  //non ci serve
   componentWillUnmount() {
     document.removeEventListener("message", this.handleMessage, false);
   }
 
+  //non ci serve
   handleMessage = (event) => {
     const data = JSON.parse(event.data);
     const { history } = this.props;
@@ -182,57 +191,58 @@ class CreateBookStepper extends React.Component {
     }
   };
 
+  //create book
   createActivity = () => {
     const { match, history, enqueueSnackbar, language } = this.props;
+    console.log("props")
+    console.log(this.props);//stampa roba che non si capisce
     const texts = Texts[language].createActivityStepper;
     const { groupId } = match.params;
+    console.log("params")
+    console.log(match.params);
     const { information, dates, timeslots } = this.state;
-    const userId = JSON.parse(localStorage.getItem("user")).id;
-    const activity = this.formatDataToActivity(
-      information,
-      dates,
-      timeslots,
-      groupId,
-      userId
+    console.log("state")
+    console.log(this.state)
+    //const userId = JSON.parse(localStorage.getItem("user")).id;// da fare quando metto il propietario, da vedere
+
+    const book = this.formatDataToActivity(
+      information      
     );
+    console.log("book")
+    console.log(book)
+    /*
     const events = this.formatDataToEvents(
       information,
       dates,
       timeslots,
       groupId
     );
+    */
     this.setState({ creating: true });
     axios
-      .post(`/api/groups/${groupId}/activities`, { activity, events })
-      .then((response) => {
-        if (response.data.status === "pending") {
-          enqueueSnackbar(texts.pendingMessage, {
-            variant: "info",
-          });
-        }
-        Log.info(response);
-        history.goBack();
-      })
-      .catch((error) => {
-        Log.error(error);
-        history.goBack();
-      });
+    .post
+    ("/api/book/add", 
+      book
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      Log.error(error);
+      return [];
+    });
   };
 
-  formatDataToActivity = (information, dates, timeslots, groupId, userId) => {
+  // da sostituire con book, group id e user id da fare dopo TODO
+  formatDataToActivity = (information, /*groupId, userId*/) => {
     return {
-      group_id: groupId,
-      creator_id: userId,
-      name: information.name,
-      color: information.color,
+      author: information.author,
+      title: information.title,
       description: information.description,
-      location: information.location,
-      repetition: dates.repetition,
-      repetition_type: dates.repetitionType,
-      different_timeslots: timeslots.differentTimeslots,
     };
   };
 
+  //rimuovibile tranguillamente khiem puzza
   formatDataToEvents = (information, dates, timeslots, groupId) => {
     const events = [];
     dates.selectedDays.forEach((date, index) => {
@@ -291,17 +301,12 @@ class CreateBookStepper extends React.Component {
     return events;
   };
 
+  // non ci serve
   handleContinue = () => {
-    const { activeStep } = this.state;
-    if (activeStep === 2) {
-      this.createActivity();
-    } else {
-      this.setState({
-        activeStep: activeStep + 1,
-      });
-    }
+      this.createActivity();// da mettere su create button
   };
 
+  //deleta
   handleCancel = () => {
     const { activeStep } = this.state;
     this.setState({
@@ -309,74 +314,37 @@ class CreateBookStepper extends React.Component {
     });
   };
 
-  handleInformationSubmit = (information, wasValidated) => {
-    this.setState({ information, stepWasValidated: wasValidated });
+  //bottone ok
+  handleInformationSubmit = (information) => {
+    this.setState({ information });
   };
 
+  //non neccessario
   handleDatesSubmit = (dates, wasValidated) => {
     this.setState({ dates, stepWasValidated: wasValidated });
   };
 
+  // non neccessario
   handleTimeslotsSubmit = (timeslots, wasValidated) => {
     this.setState({ timeslots, stepWasValidated: wasValidated });
   };
 
+  // da modificare
   getStepContent = () => {
-    const { activeStep, information, dates, timeslots } = this.state;
-    switch (activeStep) {
-      case 0:
-        return (
-          <CreateBookInformation
-            {...information}
-            handleSubmit={this.handleInformationSubmit}
-          />
-        );
-      case 1:
-        return (
-          <CreateActivityDates
-            {...dates}
-            handleSubmit={this.handleDatesSubmit}
-          />
-        );
-      case 2:
-        return (
-          <CreateActivityTimeslots
-            activityName={information.name}
-            activityLocation={information.location}
-            activityLink={information.link}
-            dates={dates.selectedDays}
-            {...timeslots}
-            handleSubmit={this.handleTimeslotsSubmit}
-          />
-        );
-        
-      default:
-        return <div>Lorem Ipsum</div>;
-    }
+    const { information, } = this.state;
+    return (
+      <CreateBookInformation
+        {...information}
+        handleSubmit={this.handleInformationSubmit}
+      />
+    );  
   };
 
-  getStepLabel = (label, index) => {
-    const { activeStep } = this.state;
+  // tenere per le icone
+  getStepLabel = () => {
     const iconStyle = { fontSize: "2rem" };
-    let icon = "";
-    switch (index) {
-      case 0:
-        icon = "fas fa-info-circle";
-        break;
-      case 1:
-        icon = "fas fa-calendar-alt";
-        break;
-      case 2:
-        icon = "fas fa-clock";
-        break;
-      default:
-        icon = "fas fa-exclamation";
-    }
-    if (activeStep >= index) {
-      iconStyle.color = "#00838F";
-    } else {
-      iconStyle.color = "rgba(0,0,0,0.5)";
-    }
+    let icon = "fas fa-info-circle";    
+    iconStyle.color = "#00838F";
     return (
       <div id="stepLabelIconContainer">
         <i className={icon} style={iconStyle} />
@@ -384,90 +352,56 @@ class CreateBookStepper extends React.Component {
     );
   };
 
-  getDatesCompletedLabel = (label) => {
-    const { dates: days } = this.state;
-    const { selectedDays, repetitionType } = days;
-    let completedLabel = "";
-    if (repetitionType === "monthly") {
-      const selectedDay = moment(selectedDays[0]);
-      completedLabel = `Every ${selectedDay.format("Do ")}`;
-    } else {
-      const eachMonthsDates = {};
-      selectedDays.forEach((selectedDay) => {
-        const key = moment(selectedDay).format("MMMM YYYY");
-        if (eachMonthsDates[key] === undefined) {
-          eachMonthsDates[key] = [selectedDay];
-        } else {
-          eachMonthsDates[key].push(selectedDay);
-        }
-      });
-      const months = Object.keys(eachMonthsDates);
-      const dates = Object.values(eachMonthsDates);
-      for (let i = 0; i < months.length; i += 1) {
-        let monthString = "";
-        dates[i].forEach((date) => {
-          monthString += ` ${moment(date).format("DD")},`;
-        });
-        monthString = monthString.substr(0, monthString.length - 1);
-        monthString += ` ${months[i]}`;
-        completedLabel += ` ${monthString}, `;
-      }
-      completedLabel = completedLabel.substr(0, completedLabel.length - 2);
-    }
-    return (
-      <div style={{ paddingTop: "2 rem" }}>
-        <div className="row-nogutters">{label}</div>
-        <div className="row-nogutters" style={{ opacity: 0.54 }}>
-          {completedLabel}
-        </div>
-      </div>
-    );
-  };
+
 
   render() {
     const { language, classes } = this.props;
+    //testo
     const texts = Texts[language].createActivityStepper;
+    //testo degli step
     const steps = texts.stepLabels;
+
     const { activeStep, stepWasValidated, creating } = this.state;
+    /*
     return (
       <div className={classes.root}>
         {creating && <LoadingSpinner />}
-        <MuiThemeProvider theme={muiTheme}>
-          <Stepper activeStep={activeStep} orientation="vertical">
-            {steps.map((label, index) => {
+        <MuiThemeProvider theme={muiTheme}> da  togliere
+          <Stepper activeStep={activeStep} orientation="vertical"> da  togliere
+            {steps.map((label, index) => { da  togliere
               return (
                 <Step key={label}>
                   <StepLabel
-                    icon={this.getStepLabel(label, index)}
+                    icon={this.getStepLabel(label, index)} da  tenere ????
                     className={classes.stepLabel}
                   >
                     {activeStep > index && index === 1 ? (
-                      <div>{this.getDatesCompletedLabel(label)}</div>
+                      <div>{this.getDatesCompletedLabel(label)}</div>  da  togliere
                     ) : (
                       label
                     )}
                   </StepLabel>
                   <StepContent>
-                    {this.getStepContent()}
+                    {this.getStepContent()} nostro pezzo
                     <div className={classes.actionsContainer}>
                       <div>
                         <Button
-                          disabled={!stepWasValidated}
+                          disabled={!stepWasValidated} //togliere
                           variant="contained"
                           color="primary"
-                          onClick={this.handleContinue}
+                          onClick={this.handleContinue}//cambiare con invio database
                           className={
-                            activeStep === steps.length - 1
+                            activeStep === steps.length - 1//togliere
                               ? classes.createButton
                               : classes.continueButton
                           }
                         >
                           {activeStep === steps.length - 1
-                            ? texts.finish
+                            ? texts.finish//togliere
                             : texts.continue}
                         </Button>
                         <Button
-                          disabled={activeStep === 0}
+                          disabled={activeStep === 0}//togliere tutto
                           onClick={this.handleCancel}
                           className={classes.cancelButton}
                         >
@@ -481,6 +415,29 @@ class CreateBookStepper extends React.Component {
             })}
           </Stepper>
         </MuiThemeProvider>
+      </div>
+    ); */
+    return (
+      <div className={classes.root}>
+        {creating && <LoadingSpinner />}
+          <div
+            icon={this.getStepLabel()} 
+            className={classes.stepLabel}
+          >
+          </div>
+          <div>
+            {this.getStepContent()}
+              <div className={classes.actionsContainer}>
+                <div>
+                  <Button                      
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleContinue}//cambiare con invio database
+                    >                          
+                  </Button>                        
+                </div>
+              </div>
+          </div>
       </div>
     );
   }

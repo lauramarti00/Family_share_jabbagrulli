@@ -6,7 +6,7 @@ export default class CreateBook extends React.Component {
   constructor(props) {
     super(props);
 
-    //campi
+    //metodi per cambiare lo stato
     this.onChangeAuthor = this.onChangeAuthor.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
