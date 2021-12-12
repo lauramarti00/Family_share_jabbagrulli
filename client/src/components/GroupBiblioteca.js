@@ -51,9 +51,11 @@ const styles = {
   },
 };
 
-const fetchActivites = (groupId) => {
+
+const fetchBook = () => {
   return axios
-    .get(`/api/groups/${groupId}/activities`)
+    //.get(`/api/groups/${groupId}/activities`) //api/book
+    .get(`/api/book`)
     .then((response) => {
       return response.data;
     })
@@ -90,17 +92,17 @@ class GroupBiblioteca extends React.Component {
   async componentDidMount() {
     const { group } = this.state;
     const { group_id: groupId } = group;
-    const activities = await fetchActivites(groupId);
+    //const book = await fetchActivites(groupId);
+    const book = await fetchBook();
     const plans = await fetchPlans(groupId);
-    const acceptedActivities = activities.filter(
-      (activity) => activity.status === "accepted"
-    );
-    const pendingActivities = activities.length - acceptedActivities.length;
+    //const acceptedActivities = activities.filter(
+    //  (activity) => activity.status === "accepted"
+    //);
+    //const pendingActivities = activities.length - acceptedActivities.length;
     this.setState({
       confirmDialogIsOpen: false,
       fetchedData: true,
-      activities: acceptedActivities,
-      pendingActivities,
+      activities: book,
       plans,
     });
   }
@@ -123,12 +125,12 @@ class GroupBiblioteca extends React.Component {
   /*visualizza le attività nella biblioteca, chiama la funzione BookListItem*/
   renderActivities = () => {
     const { group, activities } = this.state;
-    const { group_id: groupId } = group;
+    //const { group_id: groupId } = group;
     return (
       <ul>
         {activities.map((activity, index) => (
           <li key={index}>
-            <BookListItem activity={activity} groupId={groupId} />
+            <BookListItem activity={activity} />
             
           </li>
         ))}

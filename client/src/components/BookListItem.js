@@ -85,10 +85,12 @@ class BookListItem extends React.Component {
     this.setState({ fetchedTimeslots: true, activity });
   }
 
+
+  //mi reinderizza alla pagina informazioni del libro
   handleActivityClick = (event) => {
     const { history } = this.props;
     const { pathname } = history.location;
-    history.push(`${pathname}/${event.currentTarget.id}`);
+    history.push(`${pathname}/${event.currentTarget.id}`); //da modificare
   };
 
   getDatesString = () => {
@@ -135,7 +137,7 @@ class BookListItem extends React.Component {
           onKeyPress={this.handleActivityClick}
           className="row no-gutters"
           style={{ minHheight: "7rem", cursor: "pointer" }}
-          id={activity.activity_id}
+          id={activity._id}
           onClick={this.handleActivityClick}
         >
           {activity.subscribed && (
@@ -143,22 +145,21 @@ class BookListItem extends React.Component {
               <i className="fas fa-user-check" />
             </div>
           )}
-          {/*TO DO perchè activity.image non è nulla, devo passarmi da activity il path e non so come fare*/}
+          {/*TO DO perchè activity.image non è nulla, devo passarmi da activity il path e non so come fare
           <div className="col-2-10">
             <img
               src={activity.image}
               alt="child profile logo"
               className="horizontalCenter profilePhoto"
             />
-        
-            {/*<i
+            <i
               style={{
                 fontSize: "3rem",
                 color: activity.color,
               }}
               className="fas fa-certificate center"
-            />*/}
-          </div>
+            />
+            </div>*/}
           <div
             className="col-6-10"
             style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }}
@@ -166,11 +167,11 @@ class BookListItem extends React.Component {
             <div className="verticalCenter">
               {/*mi da il titolo del libro*/}
               <div className="row no-gutters">
-                <h1>{activity.name}</h1>
+                <h1>{activity.title}</h1>
               </div>
               {/*mi da l'autore del libro*/}
               <div className="row no-gutters">
-                <h1>{activity.location}</h1>
+                <h1>{activity.author}</h1>
               </div>
             </div>
           </div>
