@@ -23,6 +23,7 @@ export default class Catalogo extends React.Component {
     this.state = {books: []};
   }
 
+  //ritorna una lista di elementi >:C
   componentDidMount() {
     axios.get('/api/book/')
       .then(response => {
