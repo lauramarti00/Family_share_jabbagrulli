@@ -145,13 +145,15 @@ class BookListItem extends React.Component {
               <i className="fas fa-user-check" />
             </div>
           )}
-          {/*TO DO perchè activity.image non è nulla, devo passarmi da activity il path e non so come fare
+          {/*TO DO perchè activity.image non è nulla, devo passarmi da activity il path e non so come fare*/}
           <div className="col-2-10">
             <img
               src={activity.image}
               alt="child profile logo"
               className="horizontalCenter profilePhoto"
             />
+          
+          {/*<div className="col-2-10">
             <i
               style={{
                 fontSize: "3rem",
@@ -159,7 +161,8 @@ class BookListItem extends React.Component {
               }}
               className="fas fa-certificate center"
             />
-            </div>*/}
+            */}
+            </div>
           <div
             className="col-6-10"
             style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }}
