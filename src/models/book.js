@@ -8,7 +8,7 @@ const bookSchema = new Schema({
   title: { type: String, required: true, trim:true },
   description: { type: String, required: true },
   userId: { type: String, required: true,  trim:true}, // new vicky
-  groupId: { type: String, trim:true } // new vicky
+  groupId: { type: String, required: true, trim:true } // new vicky
 }, {
   timestamps: true,
   toJSON: { virtuals: true } 
