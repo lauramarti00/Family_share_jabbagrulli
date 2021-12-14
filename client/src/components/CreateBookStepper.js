@@ -80,7 +80,9 @@ class CreateBookStepper extends React.Component {
     const { information,} = this.state;
     const userId = JSON.parse(localStorage.getItem("user")).id;// TODO quando metto il propietario, da vedere
     const book = this.formatDataToBook(
-      information      
+      information,
+      userId, // new vicky
+      groupId   // new vicky   
     );
     console.log("book")
     console.log(book)
@@ -98,18 +100,21 @@ class CreateBookStepper extends React.Component {
     });
   };
 
-  // TODO sostituire con book, group id e user id da fare dopo TODO
-  formatDataToBook = (information, /*groupId, userId*/) => {
+  // mi raccomando l'ordine è importante
+  formatDataToBook = (information,  userId, groupId) => {
     return {
       author: information.author,
-      title: information.title,
+      title: information.title,      
       description: information.description,
+      userId: userId.toString(),  // new vicky 
+      groupId: groupId.toString(),  // new vicky 
+      
     };
   };
 
   handleContinue = () => {
       this.createBook();
-      window.location = '/catalogo'; //TODO modificare
+      // window.location = '/catalogo'; //TODO modificare
   };
 
   //funziona che aggiorna le informazioni ad ogni scrittura in CreateBookInformation

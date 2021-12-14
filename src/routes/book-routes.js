@@ -16,11 +16,15 @@ router.post('/add', (req, res, next) => {
   const author = req.body.author;
   const title = req.body.title;
   const description = req.body.description;  
+  const userId = req.body.userId;  // new vicky
+  const groupId = req.body.groupId;  // new vicky
 
   const newBook = new Book({
     author,
     title,
-    description    
+    description,
+    userId, // new vicky
+    groupId // new vicky
   });
 
   newBook.save()
