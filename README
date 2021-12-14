@@ -1,0 +1,16 @@
+HO PREPARATO QUESTO TESTO PER DIRE ERRORI E PROVE FATTE
+
+1. INSERIRE IL PROPRIO NOME
+2. INSERIRE IL NOME DEL FILE
+3. SCRIVERE IL PROBLEMA
+
+VI RICORDO DI COMMENTARE IL CODICE, in caso il problema sia risolto, senza il consenso di tutto il 
+gruppo non deve essere eliminato ma confermato.
+
+-------------------------------------------------------------------------------------------------------
+
+NOME: VICKY
+FILE: routes/book-routes, components/GroupBiblioteca
+PROBLEMA: bisogna sistare le richieste di get '/' prende un group, deve filtrare i libri per gruppo
+
+-------------------------------------------------------------------------------------------------------
