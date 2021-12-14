@@ -109,7 +109,7 @@ class CreateBookStepper extends React.Component {
 
   handleContinue = () => {
       this.createBook();
-      //window.location = '/catalogo'; //TODO modificare
+      window.location = '/catalogo'; //TODO modificare
   };
 
   //funziona che aggiorna le informazioni ad ogni scrittura in CreateBookInformation
