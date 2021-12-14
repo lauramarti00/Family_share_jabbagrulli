@@ -12,7 +12,7 @@ const CreateBookScreen = ({ language, history }) => {
   return (
     <div id="createActivityContainer">
       <BackNavigation
-        title={texts.backNavTitle}
+        title={"Aggiungi Libro"}
         onClick={() => history.goBack()}
       />
       <CreateBookStepper />
