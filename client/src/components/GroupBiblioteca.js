@@ -107,7 +107,7 @@ class GroupBiblioteca extends React.Component {
     });
   }
 
-  /*serve per aggiungere accedere alla pagina di aggiungi libro vedi CreateBookStepper e Information*/
+  /*serve per aggiungere */
   add = (type) => {
     const { history } = this.props;
     const {
@@ -131,6 +131,7 @@ class GroupBiblioteca extends React.Component {
         {activities.map((activity, index) => (
           <li key={index}>
             <BookListItem activity={activity} />
+            
           </li>
         ))}
       </ul>
@@ -219,7 +220,6 @@ class GroupBiblioteca extends React.Component {
     ];
     return (
       <div style={{ paddingBottom: "6rem" }}>
-        {/*TODO vedere cosa fa sta roba*/}
         <ActivityOptionsModal
           isOpen={optionsModalIsOpen}
           options={options}
@@ -283,7 +283,6 @@ class GroupBiblioteca extends React.Component {
             color="primary"
             aria-label="Add"
             className={classes.add}
-            //TODO ATTENZIONE A QUESTA FUNZIONE CHE CAMBIA NEL CASO NON SI è ADMIN
             onClick={() =>
               userIsAdmin ? this.toggleAdd() : this.add("activities")
             }
@@ -312,7 +311,7 @@ class GroupBiblioteca extends React.Component {
                 className={classes.addActivity}
                 onClick={() => this.add("aggiungilibro")}
               >
-                <i className="fas fa-book" />
+                <i className="fas fa-certificate" />
               </Fab>
             </div>
             <div

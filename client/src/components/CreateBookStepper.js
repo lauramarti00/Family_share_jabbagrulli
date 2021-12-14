@@ -14,46 +14,21 @@ import Log from "./Log";
 import LoadingSpinner from "./LoadingSpinner";
 
 
-//MUI CHE PERMETTE UNA GRAFICA MIGLIORE
-
-
+//CSS
 const styles = (theme) => ({
   root: {
     width: "100%",
   },
   continueButton: {
-    backgroundColor: "#ff6f00",
-    position: "fixed",
-    bottom: "5%",
-    left: "50%",
-    transform: "translateX(-50%)",
-    borderRadius: "3.2rem",
+    backgroundColor: "#00838F",
     marginTop: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     "&:hover": {
-      backgroundColor: "#ff6f00",
+      backgroundColor: "#00838F",
     },
-  },
-  stepLabel: {
-    root: {
-      color: "#ffffff",
-      "&$active": {
-        color: "white",
-        fontWeight: 500,
-      },
-      "&$completed": {
-        color: theme.palette.text.primary,
-        fontWeight: 500,
-      },
-      "&$alternativeLabel": {
-        textAlign: "center",
-        marginTop: 16,
-        fontSize: "5rem",
-      },
-      "&$error": {
-        color: theme.palette.error.main,
-      },
-    },
+    boxShadow: "0 6px 6px 0 rgba(0,0,0,0.24)",
+    height: "4.2rem",
+    width: "12rem",
   },
 });
 
@@ -61,7 +36,26 @@ const styles = (theme) => ({
 class CreateBookStepper extends React.Component {
   constructor(props) {
     super(props);
-    
+    const colors = [
+      "#f44336",
+      "#e91e63",
+      "#9c27b0",
+      "#673ab7",
+      "#3f51b5",
+      "#2196f3",
+      "#03a9f4",
+      "#00bcd4",
+      "#009688",
+      "#4caf50",
+      "#8bc34a",
+      "#cddc39",
+      "#ffeb3b",
+      "#ffc107",
+      "#ff9800",
+      "#ff5722",
+      "#795548",
+      "#607d8b",
+    ];
     this.state = {
       information: {
         title: "",
@@ -76,6 +70,7 @@ class CreateBookStepper extends React.Component {
   //create book
   createBook = () => {
     const { match, history, enqueueSnackbar, language } = this.props;
+    const texts = Texts[language].createActivityStepper;
     const { groupId } = match.params;
     const { information,} = this.state;
     const userId = JSON.parse(localStorage.getItem("user")).id;// TODO quando metto il propietario, da vedere
@@ -88,7 +83,9 @@ class CreateBookStepper extends React.Component {
     //aggiunta libro al database
     axios
     .post
-    ("/api/book/add", book)
+    ("/api/book/add", 
+      book
+    )
     .then((response) => {
       console.log(response.data);
     })
@@ -109,7 +106,7 @@ class CreateBookStepper extends React.Component {
 
   handleContinue = () => {
       this.createBook();
-      //window.location = '/catalogo'; //TODO modificare
+      window.location = '/catalogo'; //TODO modificare
   };
 
   //funziona che aggiorna le informazioni ad ogni scrittura in CreateBookInformation
@@ -154,15 +151,13 @@ class CreateBookStepper extends React.Component {
           </div>
           <div>
             {this.getStepContent()}
-              <div className={classes.continueButton}> {/*stile bottone vedi supra la funzione*/}
+              <div className={classes.actionsContainer}>
                 <div>
                   <Button                      
                     variant="contained"
                     color="primary"
                     onClick={this.handleContinue}//funzione che invia dati al db
-                    >
-                    {/*TODO editare*/}
-                    Salva                          
+                    >                          
                   </Button>                        
                 </div>
               </div>

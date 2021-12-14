@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import autosize from "autosize";
+import { CirclePicker } from "react-color";
 import withLanguage from "./LanguageContext";
 import Texts from "../Constants/Texts";
 import * as path from "lodash.get";
-
 
 
 class CreateBookInformation extends React.Component {
@@ -15,9 +15,11 @@ class CreateBookInformation extends React.Component {
       title,
       author,
       description,
+      cost,
+      color,
       image,
     } = this.props;
-    this.state = {  description, author, title, image, };
+    this.state = { color, cost, description, author, title, image, };
     handleSubmit(this.state, this.validate(this.state));
     autosize(document.querySelectorAll("textarea"));
   }
@@ -40,16 +42,21 @@ class CreateBookInformation extends React.Component {
     this.setState(state);
   };
 
+  handleColorChange = (color) => {
+    const { handleSubmit } = this.props;
+    const state = Object.assign({}, this.state);
+    state.color = color.hex;
+    handleSubmit(state, this.validate(state));
+    this.setState(state);
+  };
 
-  // Funzioni presi da EditGroupScreen che servono ad inserire immagini
+  /*Funzioni presi da EditGroupScreen che servono ad inserire immagini*/
   handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      //funzione FileReader che apre il file caricato
       const reader = new FileReader();
       reader.onload = (e) => {
-        //this.setState({ image: { path: e.target.result }, file });
-        this.setState({ image: {path: e.target.result }, file })
+        this.setState({ image: { path: e.target.result }, file });
       };
       reader.readAsDataURL(event.target.files[0]);
     }
@@ -65,11 +72,11 @@ class CreateBookInformation extends React.Component {
 
   render() {
     const { language } = this.props;
-    const { title, description, author, image, } = this.state;
+    const { title, color, description, author, image, } = this.state;
     const texts = Texts[language].createBookInformation;
     const rowStyle = { minHeight: "7rem" };
     return (
-      <div id="createBookInformationContainer">
+      <div id="createActivityInformationContainer">
         <div className="row no-gutters" style={rowStyle}>
           <div className="col-2-10">
             <i className="fas fa-clipboard-check center" />
@@ -118,18 +125,34 @@ class CreateBookInformation extends React.Component {
             />
           </div>
         </div>
+        {/*}
+        <div className="row no-gutters" style={rowStyle}>
+          <div className="col-2-10">
+            <i className="fas fa-link center" />
+          </div>
+          <div className="col-8-10">
+            <input
+              type="text"
+              name="link"
+              placeholder={texts.link}
+              value={link}
+              className="center"
+              onChange={this.handleChange}
+            />
+          </div>
+        </div>
+            */}
         <div className="row no-gutters" style={rowStyle}>
             <div className="col-2-10">
-              <i className="fas fa-camera center" />
+                  <i className="fas fa-camera center" />
             </div>
-
             <div className="col-7-10">
             <div id="uploadGroupLogoContainer">
               <label
                 htmlFor="uploadLogoInput"
                 className="horizontal"
               >
-                {"Upload"}
+                {texts.link}
               </label>
               {window.isNative ? (
                 <input
@@ -149,15 +172,39 @@ class CreateBookInformation extends React.Component {
                 />
               )}
               {/*da sistemare, non so come posizionarlo*/}
-              <div className="img">
+              <div className="line-7-10">
                 <img
                   src={path(image, ["path"])}
-                  alt="user profile logo"
+                  alt="child profile logo"
                   className="horizontal square right"
                 />
                 </div>
             </div>
             </div>
+        </div>
+        <div className="row no-gutters" style={rowStyle}>
+          <div className="col-2-10">
+            <i
+              className="fas fa-palette center"
+              style={{ color }}
+              alt="palette icon"
+            />
+          </div>
+          <div className="col-8-10">
+            <h1 className="verticalCenter" style={{ color }}>
+              {texts.color}
+            </h1>
+          </div>
+        </div>
+        <div className="row no-gutters" style={{ marginBottom: "2rem" }}>
+          <div className="col-2-10" />
+          <div className="col-8-10">
+            <CirclePicker
+              width="100%"
+              color={color}
+              onChange={this.handleColorChange}handleSubmit
+            />
+          </div>
         </div>
       </div>
     );
@@ -168,11 +215,10 @@ CreateBookInformation.propTypes = {
   title: PropTypes.string,
   author: PropTypes.string,
   description: PropTypes.string,
-  //cost: PropTypes.number,
-  //color: PropTypes.string,
+  cost: PropTypes.number,
+  color: PropTypes.string,
   handleSubmit: PropTypes.func,
   language: PropTypes.string,
-  image: PropTypes.object,
 };
 
 export default withLanguage(CreateBookInformation);
