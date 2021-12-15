@@ -1,18 +1,19 @@
+import Card from "./CardWithLink";
 import React from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import Fab from "@material-ui/core/Fab";
+//import Fab from "@material-ui/core/Fab";
 import { withStyles } from "@material-ui/core/styles";
 import withLanguage from "./LanguageContext";
 import Texts from "../Constants/Texts";
-import ActivityOptionsModal from "./OptionsModal";
+//import ActivityOptionsModal from "./OptionsModal";
 import BookListItem from "./BookListItem";
-import PlanListItem from "./PlanListItem";
-import ConfirmDialog from "./ConfirmDialog";
+//import PlanListItem from "./PlanListItem";
+//import ConfirmDialog from "./ConfirmDialog";
 import Log from "./Log";
 
 
-/*questo indica solamente come sono fatti i bottoni*/
+/*per me si puo togliere con magheggi vari -bae*/
 const styles = {
   /*bottone +*/
   add: {
@@ -65,7 +66,7 @@ const fetchBook = () => {
     });
 };
 
-const fetchPlans = (groupId) => {
+/* const fetchPlans = (groupId) => {
   return axios
     .get(`/api/groups/${groupId}/plans`)
     .then((response) => {
@@ -75,15 +76,15 @@ const fetchPlans = (groupId) => {
       Log.error(error);
       return [];
     });
-};
+}; */
 
-class GroupBiblioteca extends React.Component {
+class MyBooks extends React.Component {
   constructor(props) {
     super(props);
     const { group } = this.props;
     this.state = {
       group,
-      showAddOptions: false,
+    //   showAddOptions: false,
       fetchedData: false,
       optionsModalIsOpen: false,
     };
@@ -91,10 +92,10 @@ class GroupBiblioteca extends React.Component {
 
   async componentDidMount() {
     const { group } = this.state;
-    const { group_id: groupId } = group;
+    /* const { group_id: groupId } = group; */
     //const book = await fetchActivites(groupId);
     const book = await fetchBook();
-    const plans = await fetchPlans(groupId);
+    /* const plans = await fetchPlans(groupId); */
     //const acceptedActivities = activities.filter(
     //  (activity) => activity.status === "accepted"
     //);
@@ -103,12 +104,12 @@ class GroupBiblioteca extends React.Component {
       confirmDialogIsOpen: false,
       fetchedData: true,
       activities: book,
-      plans,
+     /*  plans, */
     });
   }
-/* TODO: rimuovere if da path path a fine applicazione*/
+  /* TODO: rimuovere if da path path a fine applicazione*/
   /*serve per aggiungere accedere alla pagina di aggiungi libro vedi CreateBookStepper e Information*/
-  add = (type) => {
+ /*  add = (type) => {
     const { history } = this.props;
     const {
       group: { group_id: groupId },
@@ -120,7 +121,7 @@ class GroupBiblioteca extends React.Component {
   toggleAdd = () => {
     const { showAddOptions } = this.state;
     this.setState({ showAddOptions: !showAddOptions });
-  };
+  }; */
 
   /*visualizza le attività nella biblioteca, chiama la funzione BookListItem*/
   renderActivities = () => {
@@ -138,7 +139,7 @@ class GroupBiblioteca extends React.Component {
   };
 
   /*penso serva a creare qualcosa*/
-  renderPlans = () => {
+/*   renderPlans = () => {
     const { group, plans } = this.state;
     const { group_id: groupId } = group;
     return (
@@ -150,8 +151,9 @@ class GroupBiblioteca extends React.Component {
         ))}
       </ul>
     );
-  };
+  }; */
 
+  //TODO: check se serve o no
   handleModalOpen = () => {
     this.setState({ optionsModalIsOpen: true });
   };
@@ -162,7 +164,7 @@ class GroupBiblioteca extends React.Component {
 
   /*il bottone per esportare in agenda tutto, roba inutile che */
   
-  
+  /* 
   handleExport = () => {
     const { group } = this.state;
     const { group_id: groupId } = group;
@@ -183,53 +185,65 @@ class GroupBiblioteca extends React.Component {
     const { group } = this.state;
     const { group_id: groupId } = group;
     history.push(`/groups/${groupId}/activities/pending`);
-  };
+  }; */
 
+  //TODO: vedere se serve
   handleConfirmDialogOpen = () => {
     this.setState({ confirmDialogIsOpen: true, optionsModalIsOpen: false });
   };
 
-  handleConfirmDialogClose = (choice) => {
+  /* handleConfirmDialogClose = (choice) => {
     if (choice === "agree") {
       this.handleExport();
     }
     this.setState({ confirmDialogIsOpen: false });
-  };
+  }; */
 
   render() {
-    const { classes, language, history, userIsAdmin } = this.props;
+    const { classes, language, history/* , userIsAdmin  */} = this.props;
     const {
       optionsModalIsOpen,
       confirmDialogIsOpen,
       group,
-      pendingActivities,
-      showAddOptions,
+      /* pendingActivities,
+      showAddOptions, */
       fetchedData,
-      plans,
+    //   plans,
     } = this.state;
-    const { name } = group;
+    /* const { name } = group; */
     const texts = Texts[language].groupActivities;
     /*non so a cosa serva ma in teoria carica il testo in base alla lingua quindi se presente in uno solo  non va*/
-    const options = [
+   /*  const options = [
       {
         label: texts.export,
         style: "optionsModalButton",
         handle: this.handleConfirmDialogOpen,
       },
-    ];
+    ]; */
     return (
-      <div style={{ paddingBottom: "6rem" }}>
-        {/*TODO vedere cosa fa sta roba*/}
-        <ActivityOptionsModal
+        <div style={{ paddingBottom: "6rem" }}>
+            <div id="myBooksContainer">
+                {(
+                    <Card id="aboutCardContainer" 
+                        card={{
+                        cardHeader: "Libri Caricati",
+                        learnMore: true,
+                        link: `${history}`,  
+                        }
+                    }
+                    />
+                )}
+            </div>
+        {/* <ActivityOptionsModal
           isOpen={optionsModalIsOpen}
           options={options}
           handleClose={this.handleModalClose}
-        />
-        <ConfirmDialog
+        /> */}
+        {/* <ConfirmDialog
           title={texts.exportConfirm}
           isOpen={confirmDialogIsOpen}
           handleClose={this.handleConfirmDialogClose}
-        />
+        /> */}
         <div className="row no-gutters" id="groupMembersHeaderContainer">
           <div className="col-2-10">
             <button
@@ -241,24 +255,7 @@ class GroupBiblioteca extends React.Component {
             </button>
           </div>
           <div className="col-6-10 ">
-            <h1 className="verticalCenter">{name}</h1>
-          </div>
-          <div className="col-1-10 ">
-            {userIsAdmin && (
-              <button
-                type="button"
-                className="transparentButton center"
-                onClick={this.handlePendingRequests}
-              >
-                <i className="fas fa-certificate">
-                  {pendingActivities > 0 && (
-                    <span className="activities-badge">
-                      {pendingActivities}
-                    </span>
-                  )}
-                </i>
-              </button>
-            )}
+            <h1 className="verticalCenter">{/* name */}</h1>
           </div>
           <div className="col-1-10 ">
             <button
@@ -270,7 +267,7 @@ class GroupBiblioteca extends React.Component {
             </button>
           </div>
         </div>
-        <div
+        {/* <div
           className="row no-gutters"
           style={{
             bottom: "8rem",
@@ -283,14 +280,17 @@ class GroupBiblioteca extends React.Component {
             color="primary"
             aria-label="Add"
             className={classes.add}
-            onClick={() => this.toggleAdd() 
+            onClick={() =>
+            this.toggleAdd() 
             }
           >
             <i className={showAddOptions ? "fas fa-times" : "fas fa-plus"} />
           </Fab>
-        </div>
-        {showAddOptions && (
-          <React.Fragment>
+        </div> */}
+        {/*aggiungo un libro con this.add("aggiungilibro") -> vedi App.js
+           mi porta alla pagina CreateBookStepper(?)*/}
+        {/* showAddOptions &&  (
+           <React.Fragment>
             <div
               className="row no-gutters"
               style={{
@@ -301,8 +301,6 @@ class GroupBiblioteca extends React.Component {
                 alignItems: "center",
               }}
             >
-            {/*aggiungo un libro con this.add("aggiungilibro") -> vedi App.js
-               mi porta alla pagina CreateBookStepper(?)*/}
               <div className=" activitiesFabLabel">{"Aggiungi libro"}</div>
               <Fab
                 color="primary"
@@ -333,33 +331,33 @@ class GroupBiblioteca extends React.Component {
                 <i className="fas fa-calendar" />
               </Fab>
             </div>
-          </React.Fragment>
-        )}
+          </React.Fragment> 
+        )*/}
         <div style={{ paddingBottom: "6rem" }}>
           {fetchedData && (
             <div id="groupActivitiesContainer" className="horizontalCenter">
-              <h1 className="">{"Biblioteca"}</h1>
+              <h1 className="">{"Le mie prenotazioni"}</h1>
               {this.renderActivities()}
             </div>
           )}
-          {fetchedData && plans.length > 0 && (
+          {/* fetchedData  && plans.length > 0  && (
             <div id="groupActivitiesContainer" className="horizontalCenter">
               <h1 className="">{texts.plansHeader}</h1>
-              {this.renderPlans()}
+              { this.renderPlans() }
             </div>
-          )}
+          ) */}
         </div>
       </div>
     );
   }
 }
 
-GroupBiblioteca.propTypes = {
+MyBooks.propTypes = {
   group: PropTypes.object,
-  userIsAdmin: PropTypes.bool,
+//   userIsAdmin: PropTypes.bool,
   classes: PropTypes.object,
   language: PropTypes.string,
   history: PropTypes.object,
 };
 
-export default withStyles(styles)(withLanguage(GroupBiblioteca));
+export default withStyles(styles)(withLanguage(MyBooks));
