@@ -4,25 +4,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Images from "../Constants/Images";
 
-const styles = {
-    add: {
-      position: "fixed",
-      bottom: "3rem",
-      right: "5%",
-      height: "5rem",
-      width: "5rem",
-      borderRadius: "50%",
-      border: "solid 0.5px #999",
-      backgroundColor: "#ff6f00",
-      zIndex: 100,
-      fontSize: "2rem",
-    },
-    avatar: {
-      width: "3rem!important",
-      height: "3rem!important",
-    },
-  };
-
 const BackNavigation = ({ onClick, title }) => {
     return (
       <div
@@ -143,8 +124,7 @@ class Book extends Component {
             </div>
             
             </div>
-            <div id = "end" style={rowStyle}>
-            
+        <div id = "end" style={rowStyle}>          
             </div>
           
     </div>

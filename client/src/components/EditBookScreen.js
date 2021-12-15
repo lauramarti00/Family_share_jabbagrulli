@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import autosize from "autosize";
 
-/*const style = {
-  minHeight: 10,
-  width: 200,
-};*/
+const style = {
+  minHeight: 200,
+};
+
 
 const BackNavigation = ({ onClick, title }) => {
   return (
@@ -130,13 +131,14 @@ export default class EditBook extends Component {
         <div className="col-1-10">
         Title : 
         </div>
-        <div className="col-9-10 form-group" >       
+        <div className="col-9-10 form-group" >   
         <input  type="text"
               required
               className="form-control"
               value={this.state.title}
               onChange={this.onChangeTitle}
-              />       
+              
+              />
         </div>
       </div>
 
@@ -145,13 +147,20 @@ export default class EditBook extends Component {
           Description : 
         </div>
         <div className="col-9-10">
-        <input  type="text"
-              required
-              className="form-control"
-              value={this.state.description}
-              onChange={this.onChangeDescription}
-              //style = {style}
-              />
+        <textarea
+          type = "text"
+          rows="1"
+          name="description"
+          className="form-control"
+          placeholder={this.state.description}
+          value={this.state.description}
+          style = {style}
+          onChange={(event) => {
+            this.onChangeDescription(event);
+            autosize(document.querySelectorAll("textarea"));
+          }}
+          />     
+        
         </div>
         <div className="form-group col-9-10" style={buttonStyle}></div>
         <div className="form-group col-9-10" style={buttonStyle}>
