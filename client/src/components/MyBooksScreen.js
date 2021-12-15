@@ -7,7 +7,7 @@ import MyBooks from "./MyBooks";
 
 
 const MyBooksScreen = ({ language, history }) => {
-  /* const texts = Texts[language].createActivityScreen; */
+ 
   return (
     <div id="createActivityContainer">
       <BackNavigation
