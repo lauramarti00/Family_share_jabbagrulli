@@ -119,6 +119,11 @@ const BookInformationScreen = Loadable({
   loader: () => import("./components/BookInformationScreen"),
   loading: () => Loading,
 });
+//bae (vicky ti uccido)
+const MyBooksScreen = Loadable({
+  loader: () => import("./components/MyBooksScreen"),
+  loading: () => Loading,
+});
 const CreatePlanScreen = Loadable({
   loader: () => import("./components/CreatePlanScreen"),
   loading: () => Loading,
@@ -352,6 +357,11 @@ class App extends React.Component {
                 exact
                 path="/groups/:groupId/aggiungilibro/create"
                 component={CreateBookScreen}
+              />
+              <PrivateRoute
+                exact
+                path="/groups/:groupId/myBooks"
+                component={MyBooksScreen}
               />
               <PrivateRoute
                 exact

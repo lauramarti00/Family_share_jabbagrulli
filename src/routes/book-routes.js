@@ -1,6 +1,6 @@
-const express = require('express');
-const router = new express.Router();
-let Book = require('../models/book');
+const express = require('express')
+const router = new express.Router()
+let Book = require('../models/book')
 
 //prendere tutti gli elementi
 router.route('/list/:groupId').get((req, res) => {
@@ -11,15 +11,14 @@ router.route('/list/:groupId').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-//aggiungere elementi
+// aggiungere elementi
 router.post('/add', (req, res, next) => {
-
-  console.log(req.body);
-  const author = req.body.author;
-  const title = req.body.title;
-  const description = req.body.description;  
-  const userId = req.body.userId;  // new vicky
-  const groupId = req.body.groupId;  // new vicky
+  console.log(req.body)
+  const author = req.body.author
+  const title = req.body.title
+  const description = req.body.description
+  const userId = req.body.userId // new vicky
+  const groupId = req.body.groupId // new vicky
 
   const newBook = new Book({
     author,
@@ -27,41 +26,39 @@ router.post('/add', (req, res, next) => {
     description,
     userId, // new vicky
     groupId // new vicky
-  });
+  })
 
   newBook.save()
-  .then(() => res.json('Book added!'))
-  .catch(err => res.status(400).json('Error: ' + err));
-});
+    .then(() => res.json('Book added!'))
+    .catch(err => res.status(400).json('Error: ' + err))
+})
 
-
-//prendere elemento per id
+// prendere elemento per id
 router.route('/:id').get((req, res) => {
   Book.findById(req.params.id)
     .then(Book => res.json(Book))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+    .catch(err => res.status(400).json('Error: ' + err))
+})
 
-//rimuovere elemento per id
+// rimuovere elemento per id
 router.route('/:id').delete((req, res) => {
   Book.findByIdAndDelete(req.params.id)
     .then(() => res.json('Book deleted.'))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+    .catch(err => res.status(400).json('Error: ' + err))
+})
 
-//aggiornare per id
+// aggiornare per id
 router.route('/update/:id').post((req, res) => {
   Book.findById(req.params.id)
     .then(Book => {
-      Book.author = req.body.author;
-      Book.title = req.body.title;
-      Book.description = req.body.description;    
-      
+      Book.author = req.body.author
+      Book.title = req.body.title
+      Book.description = req.body.description
       Book.save()
         .then(() => res.json('Book updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+        .catch(err => res.status(400).json('Error: ' + err))
     })
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+    .catch(err => res.status(400).json('Error: ' + err))
+})
 
-module.exports = router;
+module.exports = router
