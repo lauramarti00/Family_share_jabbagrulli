@@ -90,7 +90,7 @@ class BookListItem extends React.Component {
   handleActivityClick = (event) => {
     const { history } = this.props;
     const { pathname } = history.location;
-    history.push(`${pathname}/${event.currentTarget.id}`); //da modificare
+    history.push(`/infoBook/${event.currentTarget.id}`); // new vicky, porta alla scheda informazioni libro
   };
 
   getDatesString = () => {

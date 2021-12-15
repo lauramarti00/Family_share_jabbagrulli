@@ -114,6 +114,11 @@ const CreateBookScreen = Loadable({
   loader: () => import("./components/CreateBookScreen"),
   loading: () => Loading,
 });
+// new vicky
+const BookInformationScreen = Loadable({
+  loader: () => import("./components/BookInformationScreen"),
+  loading: () => Loading,
+});
 const CreatePlanScreen = Loadable({
   loader: () => import("./components/CreatePlanScreen"),
   loading: () => Loading,
@@ -253,9 +258,15 @@ class App extends React.Component {
               <Route path="/faqs" component={FaqsScreen} />
               <Route path="/forgotpsw" component={ForgotPasswordScreen} />    
               
-              <Route path="/createBook" component={CreateBookScreenVicky} />
-              <Route path="/editBook/:id" component={EditBookScreen} />
-              <Route path="/catalogo" component={CatalogoScreen} />
+              <Route path="/createBook" component={CreateBookScreenVicky} // test
+               /> 
+              <Route path="/editBook/:id" component={EditBookScreen} // test
+              />
+              <Route path="/catalogo" component={CatalogoScreen} // test
+              />
+
+              <Route path="/infoBook/:id" component={BookInformationScreen} // new vicky
+               /> 
 
               <Route
                 path="/changepsw/:token"

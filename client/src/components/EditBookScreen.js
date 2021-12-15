@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const BackNavigation = ({ onClick, title }) => {
+  return (
+    <div
+      className="row no-gutters"
+      id="backNavContainer"
+    >
+      <button className="transparentButton " onClick={onClick} type="button">
+        <i className="fas fa-arrow-left" />
+      </button>
+      <h1>{title}</h1>
+    </div>
+  );
+};
+
 //TODO: da sistemare
 export default class EditBook extends Component {
   constructor(props) {
@@ -26,7 +40,7 @@ export default class EditBook extends Component {
         this.setState({
           author: response.data.author,
           title: response.data.title,
-          description: response.data.description               
+          description: response.data.description           
         })   
       })
       .catch(function (error) {
@@ -71,9 +85,18 @@ export default class EditBook extends Component {
 
   }
 
+ //tornare indietro
+ backNavClick = (event) => {
+  window.location = `/infoBook/${this.props.match.params.id}`; 
+};
+
   render() {
     return (
     <div>
+      <BackNavigation
+          title={this.state.title}
+          onClick={this.backNavClick}
+        />       
       <h3>Edit Book Log</h3>
       <form onSubmit={this.onSubmit}>
       <div className="form-group"> 

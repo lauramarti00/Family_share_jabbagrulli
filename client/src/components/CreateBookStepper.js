@@ -114,7 +114,8 @@ class CreateBookStepper extends React.Component {
 
   handleContinue = () => {
       this.createBook();
-      // window.location = '/catalogo'; //TODO modificare
+      const groupId = this.props.match.params.groupId;
+      window.location = `/groups/${groupId}/Biblioteca`; //new vicky, torna indietro alla biblioteca
   };
 
   //funziona che aggiorna le informazioni ad ogni scrittura in CreateBookInformation
@@ -167,7 +168,7 @@ class CreateBookStepper extends React.Component {
                     onClick={this.handleContinue}//funzione che invia dati al db
                     >
                     {/*TODO editare*/}
-                    Salva                          
+                    SALVA                          
                   </Button>                        
                 </div>
               </div>
