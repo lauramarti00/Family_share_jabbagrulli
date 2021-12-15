@@ -14,3 +14,23 @@ FILE: routes/book-routes, components/GroupBiblioteca
 PROBLEMA: bisogna sistare le richieste di get '/' prende un group, deve filtrare i libri per gruppo
 
 -------------------------------------------------------------------------------------------------------
+
+NOME: VICKY
+FILE: routes/book-routes, app
+PROBLEMA: bisogna sistare le richieste di get '/:id' prende un group, in termini di sicurezza non dobbiamo 
+fornire accesso a chi non è del gruppo al libro
+
+-------------------------------------------------------------------------------------------------------
+
+NOME: VICKY
+FILE: components/BookInformationScreen
+PROBLEMA: bisogna far si che in base a chi faccia richiesta ( se il proprietario o un utente del gruppo) si
+vedano schermate diverse, oltrettutto bisogna controllare che la persona sia del gruppo a chi fa l'accesso
+
+-------------------------------------------------------------------------------------------------------
+
+NOME: VICKY
+FILE: components/BookListItem
+PROBLEMA: ci sono cose inutili, serve una pulizia di codice
+
+-------------------------------------------------------------------------------------------------------
