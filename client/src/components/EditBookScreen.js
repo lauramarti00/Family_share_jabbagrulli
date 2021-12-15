@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+/*const style = {
+  minHeight: 10,
+  width: 200,
+};*/
+
 const BackNavigation = ({ onClick, title }) => {
   return (
     <div
@@ -91,46 +96,72 @@ export default class EditBook extends Component {
 };
 
   render() {
+    const rowStyle = { minHeight: "5rem" };
+    const buttonStyle = { minHeight: "6rem" };
     return (
+    
     <div>
       <BackNavigation
           title={this.state.title}
           onClick={this.backNavClick}
-        />       
-      <h3>Edit Book Log</h3>
+        />  
+
       <form onSubmit={this.onSubmit}>
-      <div className="form-group"> 
-          <label>Author: </label>
-          <input  type="text"
+      <div id="activityMainContainer">
+    <div className="row no-gutters" style={rowStyle}>
+      <div className="activityInfoHeader">EDIT BOOK</div>
+    </div>
+    
+      <div className="row no-gutters" style={rowStyle}>
+        <div className="col-1-10">
+        Author : 
+        </div>
+        <div className="col-9-10 form-group">          
+        <input  type="text"
               required
               className="form-control"
               value={this.state.author}
               onChange={this.onChangeAuthor}
-              />
+              />         
         </div>
-        <div className="form-group"> 
-          <label>Title: </label>
-          <input  type="text"
+      
+            
+      
+        <div className="col-1-10">
+        Title : 
+        </div>
+        <div className="col-9-10 form-group" >       
+        <input  type="text"
               required
               className="form-control"
               value={this.state.title}
               onChange={this.onChangeTitle}
-              />
+              />       
         </div>
-        <div className="form-group"> 
-          <label>Description: </label>
-          <input  type="text"
+      </div>
+
+      <div className="row no-gutters" style={rowStyle}>
+        <div className="col-1-10">
+          Description : 
+        </div>
+        <div className="col-9-10">
+        <input  type="text"
               required
               className="form-control"
               value={this.state.description}
               onChange={this.onChangeDescription}
+              //style = {style}
               />
         </div>
-
-        <div className="form-group">
-          <input type="submit" value="Edit Exercise Log" className="btn btn-primary" />
+        <div className="form-group col-9-10" style={buttonStyle}></div>
+        <div className="form-group col-9-10" style={buttonStyle}>
+          <input type="submit" value="EDIT" className="btn btn-primary" />
         </div>
-      </form>
+      </div>
+            
+        </div>
+        <div id = "end" style={rowStyle}></div>
+        </form>
     </div>
     )
   }

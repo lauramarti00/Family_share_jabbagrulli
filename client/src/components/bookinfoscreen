@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Images from "../Constants/Images";
 
 const styles = {
     add: {
@@ -94,59 +93,40 @@ class Book extends Component {
   
   render() {   
     const rowStyle = { minHeight: "5rem" };
-    const buttonStyle = { minHeight: "10rem" };
     return (
     <React.Fragment>
-   <div>
+    <div>
         <div className="row no-gutters" style={rowStyle}>
         <BackNavigation
           title={this.state.title}
           onClick={this.backNavClick}
          
         />   
-   </div>  
-           
-        <div id="activityMainContainer">
-            <div className="row no-gutters" style={rowStyle}>
-              <div className="activityInfoHeader">Title: {(this.state.title).toUpperCase()}</div>
-            </div>
-            {this.state.author && (
-              <div className="row no-gutters" style={rowStyle}>
-                <div className="col-1-10">
-                <i className="fas fa-user-friends groupNavbarIcon"/>
-                </div>
-                <div className="col-9-10">
-                  <div className="activityInfoDescription">
-                    {this.state.author}
-                  </div>
-                </div>
-              </div>
-            )}
-            {this.state.description && (
-              <div className="row no-gutters" style={rowStyle}>
-                <div className="col-1-10">
-                  <i className="far fa-file-alt activityInfoIcon" />
-                </div>
-                <div className="col-9-10">
-                  <div className="activityInfoDescription">
-                    {this.state.description}
-                  </div>
-                </div>
-              </div>
-            )}
+        </div>    
+      
+      <div  className="row no-gutters" style={rowStyle}> 
+      <div className="col-1-10">
+            <i className="far fa-file-alt activityInfoIcon" />
+        </div>
+      <div className="col-1-10">Author:  </div>   
+      <div className="col-9-10">{this.state.author} </div>
+      </div>
 
-            <div className="row no-gutters" style={buttonStyle}  >
-            <div className="col-1-10"></div>
+      <div  className="row no-gutters" style={rowStyle}> 
+      <div className="col-1-10">Title:  </div>   
+      <div className="col-9-10"> {this.state.title} </div>
+      </div>
+
+      <div  className="row no-gutters" style={rowStyle}> 
+      <div className="col-1-10">Description: </div>   
+      <div className="col-9-10">{this.state.description}  </div>
+      </div>
+         
+        <div className="row no-gutters">
           <button onClick={this.editClick} className="btn btn-primary col-1-10" >EDIT</button>
-          <div className="col-1-10"></div>
           <button onClick={this.deleteClick} className="btn btn-danger col-1-10" >DELETE</button>
-            </div>
-            
-            </div>
-            <div id = "end" style={rowStyle}>
-            
-            </div>
-          
+        </div>
+     
     </div>
     </React.Fragment>
     )
