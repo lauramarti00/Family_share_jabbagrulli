@@ -51,11 +51,13 @@ class Book extends Component {
 
   //tornare indietro
   backNavClick = (event) => {
-    window.location = `/groups/${this.state.groupId}/Biblioteca`; //schermata biblioteca
+    //TODO: mettere history
+    window.location = '/groups/'+this.state.groupId+'/Biblioteca'; //schermata biblioteca
   };
 
   //editare il libro
   editClick = (event) => {
+      //TODO: mettere history
     window.location = `/editBook/${this.props.match.params.id}`; // schermata editBook
   };
 
@@ -64,7 +66,7 @@ class Book extends Component {
     const groupId = this.state.groupId
     axios.delete('/api/book/'+this.props.match.params.id)
     .then(response => { console.log(response.data)});
-  
+  //TODO: mettere history
     window.location = `/groups/${groupId}/Biblioteca`; //schermata biblioteca
   };
 
@@ -77,20 +79,15 @@ class Book extends Component {
           onClick={this.backNavClick}
         />       
       
-      <div className="form-group"> 
-          <label>Author: </label>
-          <label>{this.state.author}</label>  
-        </div>
-        <div className="form-group"> 
-          <label>Title: </label>
-          <label>{this.state.title}</label>
-        </div>
-        <div className="form-group"> 
-          <label>Description: </label>
-          <label>{this.state.description}</label>
-        </div>
+      <div > 
+          <p>Author: {this.state.author} </p>   
+          <p>Title: {this.state.title} </p>
+         
+          <p>Description: {this.state.description} </p>         
+          
+        </div>        
 
-        <div className="form-group">
+        <div >
           <button onClick={this.editClick} className="btn btn-primary" >EDIT</button>
           <button onClick={this.deleteClick} className="btn btn-danger" >DELETE</button>
         </div>

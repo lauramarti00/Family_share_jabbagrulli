@@ -52,10 +52,10 @@ const styles = {
 };
 
 
-const fetchBook = () => {
+const fetchBook = (groupId) => {
   return axios
     //.get(`/api/groups/${groupId}/activities`) //api/book
-    .get(`/api/book`)
+    .get(`/api/book/list/${groupId}`)
     .then((response) => {
       return response.data;
     })
@@ -93,7 +93,7 @@ class GroupBiblioteca extends React.Component {
     const { group } = this.state;
     const { group_id: groupId } = group;
     //const book = await fetchActivites(groupId);
-    const book = await fetchBook();
+    const book = await fetchBook(groupId);
     const plans = await fetchPlans(groupId);
     //const acceptedActivities = activities.filter(
     //  (activity) => activity.status === "accepted"
