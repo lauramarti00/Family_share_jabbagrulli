@@ -2,16 +2,17 @@ const express = require('express')
 const router = new express.Router()
 let Book = require('../models/book')
 
-//prendere tutti gli elementi
+// prendere tutti gli elementi
 router.route('/list/:groupId').get((req, res) => {
-  Book.find()//ritorna una lista di tutti gli elementi
-    .then(books => res.json(books.filter(function(book){
-      return book.groupId == req.params.groupId;
-    })))//ritorna in json format
+  Book.find()// ritorna una lista di tutti gli elementi
+    .then(books => res.json(books.filter(function(book) {
+      return book.groupId == req.params.groupId
+    })))// ritorna in json format
     .catch(err => res.status(400).json('Error: ' + err));
-});
+})
 
 // aggiungere elementi
+/*
 router.post('/add', (req, res, next) => {
   console.log(req.body)
   const author = req.body.author
@@ -32,6 +33,7 @@ router.post('/add', (req, res, next) => {
     .then(() => res.json('Book added!'))
     .catch(err => res.status(400).json('Error: ' + err))
 })
+*/
 
 // prendere elemento per id
 router.route('/:id').get((req, res) => {
@@ -59,6 +61,66 @@ router.route('/update/:id').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err))
     })
     .catch(err => res.status(400).json('Error: ' + err))
+})
+
+// test per salvare file e metterlo in cartella image
+const sharp = require('sharp')
+const multer = require('multer')
+const fr = require('find-remove')
+const path = require('path')
+
+const bookStorage = multer.diskStorage({
+  destination (req, file, cb) {
+    cb(null, path.join(__dirname, '../../images/books/'))
+  },
+  filename (req, file, cb) {
+    fr(path.join(__dirname, '../../images/books'), { prefix: req.params.id })
+    cb(null, `${req.params.id}-${Date.now()}.${file.mimetype.slice(file.mimetype.indexOf('/') + 1, file.mimetype.length)}`)
+  }
+})
+const bookUpload = multer({ storage: bookStorage, limits: { fieldSize: 52428800 } })
+
+router.post('/add', bookUpload.single('photo'), async (req, res, next) => {
+  const {
+    title, author, description, userId, groupId, image: imagePath
+  } = req.body
+  console.log(req.body)
+  const { file } = req
+  /* if (!(title && author && description)) {
+    return res.status(400).send('Bad Request')
+  } */
+  // const user_id = req.params.id
+  const book = {
+    userId,
+    title,
+    author,
+    description,
+    groupId
+  }
+  console.log('file')
+  console.log(file)
+  if (file) {
+    const fileName = file.filename.split('.')
+    book.path = `/images/books/${file.filename}`
+    book.thumbnail_path = `/images/books/${fileName[0]}_t.${fileName[1]}`
+    await sharp(path.join(__dirname, `../../images/books/${file.filename}`))
+      .resize({
+        height: 200,
+        fit: sharp.fit.cover
+      })
+      .toFile(path.join(__dirname, `../../images/books/${fileName[0]}_t.${fileName[1]}`))
+  } else {
+    book.path = imagePath
+    book.thumbnail_path = imagePath
+  }
+  console.log('BOOK FINALE')
+  console.log(book)
+  try {
+    await Book.create(book)
+    res.status(200).send('Book created!')
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router

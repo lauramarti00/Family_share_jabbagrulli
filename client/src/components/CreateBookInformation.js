@@ -16,8 +16,9 @@ class CreateBookInformation extends React.Component {
       author,
       description,
       image,
+      file
     } = this.props;
-    this.state = {  description, author, title, image, };
+    this.state = {  description, author, title, image, file };
     handleSubmit(this.state, this.validate(this.state));
     autosize(document.querySelectorAll("textarea"));
   }
@@ -48,7 +49,6 @@ class CreateBookInformation extends React.Component {
       //funzione FileReader che apre il file caricato
       const reader = new FileReader();
       reader.onload = (e) => {
-        //this.setState({ image: { path: e.target.result }, file });
         this.setState({ image: {path: e.target.result }, file })
       };
       reader.readAsDataURL(event.target.files[0]);
@@ -59,13 +59,14 @@ class CreateBookInformation extends React.Component {
     window.ReactNativeWebView.postMessage(
       JSON.stringify({ action: "fileUpload" })
     );
+    console.log("bruh")
   };
 
   //----------------------------------------------------------
 
   render() {
     const { language } = this.props;
-    const { title, description, author, image, } = this.state;
+    const { title, description, author, image, file } = this.state;
     const texts = Texts[language].createBookInformation;
     const rowStyle = { minHeight: "7rem" };
     return (
@@ -168,8 +169,6 @@ CreateBookInformation.propTypes = {
   title: PropTypes.string,
   author: PropTypes.string,
   description: PropTypes.string,
-  //cost: PropTypes.number,
-  //color: PropTypes.string,
   handleSubmit: PropTypes.func,
   language: PropTypes.string,
   image: PropTypes.object,

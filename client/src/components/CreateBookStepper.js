@@ -15,8 +15,6 @@ import LoadingSpinner from "./LoadingSpinner";
 
 
 //MUI CHE PERMETTE UNA GRAFICA MIGLIORE
-
-
 const styles = (theme) => ({
   root: {
     width: "100%",
@@ -65,9 +63,10 @@ class CreateBookStepper extends React.Component {
     this.state = {
       information: {
         title: "",
-        //color: colors[Math.floor(Math.random() * colors.length)],
         description: "",
         author: "",
+        image: "/images/profiles/user_default_photo.jpg",
+        file: "",
       },
       creating: false,
     };
@@ -75,25 +74,46 @@ class CreateBookStepper extends React.Component {
 
   //create book
   createBook = () => {
-    const { match, history, enqueueSnackbar, language } = this.props;
+    const { match,} = this.props;
     const { groupId } = match.params;
     const { information,} = this.state;
     const userId = JSON.parse(localStorage.getItem("user")).id;// TODO quando metto il propietario, da vedere
     const book = this.formatDataToBook(
-      information,
-      userId, // new vicky
-      groupId   // new vicky   
+      information  
     );
-    console.log("book")
-    console.log(book)
+    //---------
+    const bodyFormData = new FormData();
+    if (information.file !== undefined) {
+      bodyFormData.append("photo", information.file);
+    } else {
+      bodyFormData.append("image", information.image);
+    }
+    bodyFormData.append("userId", userId);
+    bodyFormData.append("title", information.title);
+    bodyFormData.append("author", information.author);
+    bodyFormData.append("description", information.description);
+    bodyFormData.append("groupId", groupId);
     this.setState({ creating: true });
+    console.log("contenuto bodyformat")
+    for (var value of bodyFormData.values()) {
+      console.log(value);
+    }
+    axios
+      .post(`/api/book/add`, bodyFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+    //---------
     //aggiunta libro al database
+    /*
     axios
     .post
     ("/api/book/add", book)
     .then((response) => {
       console.log(response.data);
     })
+    */
     .catch((error) => {
       Log.error(error);
       return [];
@@ -101,13 +121,13 @@ class CreateBookStepper extends React.Component {
   };
 
   // mi raccomando l'ordine è importante
-  formatDataToBook = (information,  userId, groupId) => {
+  formatDataToBook = (information) => {
     return {
       author: information.author,
       title: information.title,      
       description: information.description,
-      userId: userId.toString(),  // new vicky 
-      groupId: groupId.toString(),  // new vicky 
+      //userId: userId.toString(),  // new vicky 
+      //groupId: groupId.toString(),  // new vicky 
       
     };
   };
@@ -121,6 +141,8 @@ class CreateBookStepper extends React.Component {
   //funziona che aggiorna le informazioni ad ogni scrittura in CreateBookInformation
   handleInformationSubmit = (information) => {
     this.setState({ information });
+    console.log("INFORMAZIONI")
+    console.log(information)
   };
 
   //integra CreateBookInformation 

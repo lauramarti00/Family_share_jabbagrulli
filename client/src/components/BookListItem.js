@@ -7,6 +7,7 @@ import moment from "moment";
 import Texts from "../Constants/Texts";
 import withLanguage from "./LanguageContext";
 import Log from "./Log";
+import Avatar from "./Avatar";
 
 
 const getUsersChildren = (userId) => {
@@ -147,22 +148,12 @@ class BookListItem extends React.Component {
           )}
           {/*TO DO perchè activity.image non è nulla, devo passarmi da activity il path e non so come fare*/}
           <div className="col-2-10">
-            <img
-              src={activity.image}
-              alt="child profile logo"
-              className="horizontalCenter profilePhoto"
-            />
-          
-          {/*<div className="col-2-10">
-            <i
-              style={{
-                fontSize: "3rem",
-                color: activity.color,
-              }}
-              className="fas fa-certificate center"
-            />
-            */}
-            </div>
+          <Avatar
+            thumbnail={activity.thumbnail_path}
+            className="center"
+            //route={`/groups/${group.group_id}/activities`}
+          />
+        </div>
           <div
             className="col-6-10"
             style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }}
