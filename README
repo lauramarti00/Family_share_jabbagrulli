@@ -15,9 +15,3 @@ PROBLEMA: bisogna sistare le richieste di get '/' prende un group, deve filtrare
 
 -------------------------------------------------------------------------------------------------------
 
-NOME: KHIEM
-FILE: CreateBookStepper,CreateBookInformation
-PROBLEMA: Se si inseriscono in ordine le informazioni del libro e poi si inserisce l'immagine, c'è un problema
-          ritorna undefined su url path etc.
-
--------------------------------------------------------------------------------------------------------
