@@ -146,12 +146,11 @@ class BookListItem extends React.Component {
               <i className="fas fa-user-check" />
             </div>
           )}
-          {/*TO DO perchè activity.image non è nulla, devo passarmi da activity il path e non so come fare*/}
+          {/*TODO MODIFICARE PARTE CSS DA ROTONDO A QUADRATO*/}
           <div className="col-2-10">
           <Avatar
             thumbnail={activity.thumbnail_path}
             className="center"
-            //route={`/groups/${group.group_id}/activities`}
           />
         </div>
           <div

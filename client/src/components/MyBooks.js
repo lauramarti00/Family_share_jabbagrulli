@@ -52,7 +52,7 @@ const styles = {
   },
 };
 
-
+/*TODO fetcha i libri che si ha preso in prestito*/
 const fetchBook = () => {
   return axios
     //.get(`/api/groups/${groupId}/activities`) //api/book
@@ -66,17 +66,6 @@ const fetchBook = () => {
     });
 };
 
-/* const fetchPlans = (groupId) => {
-  return axios
-    .get(`/api/groups/${groupId}/plans`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      Log.error(error);
-      return [];
-    });
-}; */
 
 class MyBooks extends React.Component {
   constructor(props) {
@@ -228,6 +217,7 @@ class MyBooks extends React.Component {
                         card={{
                         cardHeader: "Libri Caricati",
                         learnMore: true,
+                        /*TODO reinderizza alla pagina con la lista dei libri messi in prestito*/
                         link: `${history}`,  
                         }
                     }
