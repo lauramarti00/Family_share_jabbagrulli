@@ -65,8 +65,8 @@ class CreateBookStepper extends React.Component {
         title: "",
         description: "",
         author: "",
-        image: "/images/profiles/user_default_photo.jpg",
-        file: "",
+        image:{},
+        file:"",
       },
       creating: false,
     };
@@ -78,10 +78,9 @@ class CreateBookStepper extends React.Component {
     const { groupId } = match.params;
     const { information,} = this.state;
     const userId = JSON.parse(localStorage.getItem("user")).id;// TODO quando metto il propietario, da vedere
-    const book = this.formatDataToBook(
-      information  
-    );
-    //---------
+    console.log('DEBUG FINALE DATABASE')
+    console.log(information.image)
+    console.log(information.file)
     const bodyFormData = new FormData();
     if (information.file !== undefined) {
       bodyFormData.append("photo", information.file);
@@ -104,16 +103,6 @@ class CreateBookStepper extends React.Component {
           "Content-Type": "multipart/form-data",
         },
       })
-    //---------
-    //aggiunta libro al database
-    /*
-    axios
-    .post
-    ("/api/book/add", book)
-    .then((response) => {
-      console.log(response.data);
-    })
-    */
     .catch((error) => {
       Log.error(error);
       return [];
@@ -125,10 +114,7 @@ class CreateBookStepper extends React.Component {
     return {
       author: information.author,
       title: information.title,      
-      description: information.description,
-      //userId: userId.toString(),  // new vicky 
-      //groupId: groupId.toString(),  // new vicky 
-      
+      description: information.description
     };
   };
 
@@ -145,16 +131,24 @@ class CreateBookStepper extends React.Component {
     console.log(information)
   };
 
+  handleImageSubmit = (information) => {
+    this.setState({ information});
+  };
+
   //integra CreateBookInformation 
   getStepContent = () => {
     const { information, } = this.state;
     return (
-      <CreateBookInformation
-        {...information}
+      //funzione preso da handleSubmit di CreatBookInformation passato come props
+      <CreateBookInformation {...information}
         handleSubmit={this.handleInformationSubmit}
+        handleImageSubmit={this.handleImageSubmit}
       />
+      
     );  
   };
+
+
 
   // ritorna le icone
   getStepLabel = () => {

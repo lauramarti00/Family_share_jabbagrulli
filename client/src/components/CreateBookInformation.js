@@ -6,12 +6,12 @@ import Texts from "../Constants/Texts";
 import * as path from "lodash.get";
 
 
-
 class CreateBookInformation extends React.Component {
   constructor(props) {
     super(props);
     const {
       handleSubmit,
+      handleImageSubmit,
       title,
       author,
       description,
@@ -20,6 +20,7 @@ class CreateBookInformation extends React.Component {
     } = this.props;
     this.state = {  description, author, title, image, file };
     handleSubmit(this.state, this.validate(this.state));
+    handleImageSubmit(this.state);
     autosize(document.querySelectorAll("textarea"));
   }
 
@@ -35,36 +36,49 @@ class CreateBookInformation extends React.Component {
     //SE MODIFICO NAME CON TITLE
     const { name, value } = event.target;
     const { handleSubmit } = this.props;
-    //SE MODIFICO NAME CON TITLE NON MI DA L'ANTEPRIMA DI SCRITTURA
+    //SE MODIFICO NAME CON TITLE NON MI DA L'ANTEPRIMA DI SCRITTURA, VEDI FUNZIONE SOTTO
     state[name] = value;
     handleSubmit(state, this.validate(state));
+    console.log(state)
     this.setState(state);
   };
 
 
+
   // Funzioni presi da EditGroupScreen che servono ad inserire immagini
   handleImageChange = (event) => {
+    //a state gli passo la funzione Objectassign, vedi documentazione
+    const state = Object.assign({}, this.state);
+    //prendo il name da input button per le foto, e gli passo il name da event.targer.name
+    //ATTENZIONE, PASSO INUTILE: BASTA FARE SOTTO "state["image"], anziche prendere name che gli passerà "image"."
+    const { name} = event.target; //meh
+    const { handleImageSubmit } = this.props; //funzione props per aggiornare lo stato, e fa la funzione assign
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       //funzione FileReader che apre il file caricato
       const reader = new FileReader();
       reader.onload = (e) => {
+        //aggiorno il props aggiornando "image" e file
+        state[name] = {path:e.target.result} //potevo fare state["image"] ma ho perso 3 ore quindi lo tengo cosi
+        state["file"] = file //modifica del props file
+        handleImageSubmit(state) //mi fa la funzione
+        //setto lo state image e file
         this.setState({ image: {path: e.target.result }, file })
       };
       reader.readAsDataURL(event.target.files[0]);
     }
   };
 
+  
   handleNativeImageChange = () => {
     window.ReactNativeWebView.postMessage(
       JSON.stringify({ action: "fileUpload" })
     );
-    console.log("bruh")
   };
-
   //----------------------------------------------------------
 
   render() {
+
     const { language } = this.props;
     const { title, description, author, image, file } = this.state;
     const texts = Texts[language].createBookInformation;
@@ -130,7 +144,7 @@ class CreateBookInformation extends React.Component {
                 htmlFor="uploadLogoInput"
                 className="horizontal"
               >
-                {"Upload"}
+                {"Carica foto"}
               </label>
               {window.isNative ? (
                 <input
@@ -141,10 +155,10 @@ class CreateBookInformation extends React.Component {
                   onClick={this.handleNativeImageChange}
                 />
               ) : (
-                <input
+                <input //vedi html/react input attributes
                   id="uploadLogoInput"
                   type="file"
-                  name="photo"
+                  name="image" /*da questo image, porta event in handleImageChange, anche se è opzionale*/
                   accept="image/*"
                   onChange={this.handleImageChange}
                 />
@@ -158,7 +172,7 @@ class CreateBookInformation extends React.Component {
                 />
                 </div>
             </div>
-            </div>
+          </div>
         </div>
       </div>
     );
