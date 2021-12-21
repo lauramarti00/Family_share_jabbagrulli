@@ -11,6 +11,15 @@ router.route('/list/:groupId').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
+//lista libri del proprietario
+router.route('/listperowner/:userId').get((req, res) => {
+  Book.find()// ritorna una lista di tutti gli elementi
+    .then(books => res.json(books.filter(function (book) {
+      return (book.userId === req.params.userId)
+    })))// ritorna in json format
+    .catch(err => res.status(400).json('Error: ' + err))
+})
+
 // aggiungere elementi
 /*
 router.post('/add', (req, res, next) => {
