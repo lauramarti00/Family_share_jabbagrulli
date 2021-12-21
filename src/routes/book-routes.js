@@ -44,6 +44,13 @@ router.route('/:id').get((req, res) => {
 
 // rimuovere elemento per id
 router.route('/:id').delete((req, res) => {
+  console.log('delete')
+  Book.findById(req.params.id)
+    .then(Book => {
+      fr(path.join(__dirname, '../../images/books'), { files: Book.book_name_thumbnail_path })
+      fr(path.join(__dirname, '../../images/books'), { files: Book.book_name_path })
+    })
+    .catch(err => res.status(400).json('Error: ' + err))
   Book.findByIdAndDelete(req.params.id)
     .then(() => res.json('Book deleted.'))
     .catch(err => res.status(400).json('Error: ' + err))
@@ -84,7 +91,6 @@ router.post('/add', bookUpload.single('photo'), async (req, res, next) => {
   const {
     title, author, description, userId, groupId, image: imagePath
   } = req.body
-  console.log(req.body)
   const { file } = req
   /* if (!(title && author && description)) {
     return res.status(400).send('Bad Request')
@@ -97,12 +103,12 @@ router.post('/add', bookUpload.single('photo'), async (req, res, next) => {
     description,
     groupId
   }
-  console.log('file')
-  console.log(file)
   if (file) {
     const fileName = file.filename.split('.')
     book.path = `/images/books/${file.filename}`
+    book.book_name_path = `${file.filename}`
     book.thumbnail_path = `/images/books/${fileName[0]}_t.${fileName[1]}`
+    book.book_name_thumbnail_path = `${fileName[0]}_t.${fileName[1]}`
     await sharp(path.join(__dirname, `../../images/books/${file.filename}`))
       .resize({
         height: 200,

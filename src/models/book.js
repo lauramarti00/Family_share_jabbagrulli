@@ -9,7 +9,9 @@ const bookSchema = new Schema({
   userId: { type: String, required: true, trim: true }, // new vicky
   groupId: { type: String, required: true, trim: true }, // new vicky
   path: { type: String },
-  thumbnail_path: { type: String }
+  thumbnail_path: { type: String },
+  book_name_path: { type: String },
+  book_name_thumbnail_path: { type: String }
 }, {
   timestamps: true,
   toJSON: { virtuals: true }
