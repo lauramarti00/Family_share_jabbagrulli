@@ -9,7 +9,6 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import withLanguage from "./LanguageContext";
 import CreateBookInformation from "./CreateBookInformation";
-import Texts from "../Constants/Texts";
 import Log from "./Log";
 import LoadingSpinner from "./LoadingSpinner";
 
@@ -66,21 +65,21 @@ class CreateBookStepper extends React.Component {
         description: "",
         author: "",
         image:{},
-        file:"",
+        file:{},
       },
       creating: false,
     };
   }
 
-  //create book
+  //funzione createBook che permette di interfacciarsi al backend inviando al database le varie informazioni
   createBook = () => {
     const { match,} = this.props;
     const { groupId } = match.params;
     const { information,} = this.state;
     const userId = JSON.parse(localStorage.getItem("user")).id;// TODO quando metto il propietario, da vedere
-    console.log('DEBUG FINALE DATABASE')
-    console.log(information.image)
-    console.log(information.file)
+    //console.log('DEBUG FINALE DATABASE')
+    //console.log(information.image)
+    //console.log(information.file)
     const bodyFormData = new FormData();
     if (information.file !== undefined) {
       bodyFormData.append("photo", information.file);
@@ -93,10 +92,12 @@ class CreateBookStepper extends React.Component {
     bodyFormData.append("description", information.description);
     bodyFormData.append("groupId", groupId);
     this.setState({ creating: true });
+    /* test
     console.log("contenuto bodyformat")
     for (var value of bodyFormData.values()) {
       console.log(value);
     }
+    */
     axios
       .post(`/api/book/add`, bodyFormData, {
         headers: {
@@ -109,15 +110,7 @@ class CreateBookStepper extends React.Component {
     });
   };
 
-  // mi raccomando l'ordine è importante
-  formatDataToBook = (information) => {
-    return {
-      author: information.author,
-      title: information.title,      
-      description: information.description
-    };
-  };
-
+  //funzione collegato al bottone finale, permette la createBook e torna alla pagina di biblioteca
   handleContinue = () => {
       this.createBook();
       const groupId = this.props.match.params.groupId;
@@ -131,6 +124,7 @@ class CreateBookStepper extends React.Component {
     console.log(information)
   };
 
+  //funzione che aggiorna le props per le immagini su CreateBookInformation
   handleImageSubmit = (information) => {
     this.setState({ information});
   };
@@ -163,8 +157,7 @@ class CreateBookStepper extends React.Component {
   };
 
   render() {
-    const { language, classes } = this.props;
-    const texts = Texts[language].createActivityStepper;
+    const { classes } = this.props;
     const {creating } = this.state;
     return (
       <div className={classes.root}>
@@ -175,6 +168,7 @@ class CreateBookStepper extends React.Component {
           >
           </div>
           <div>
+            {/*mi genera la parte di scelte date da CreateBookInformation, vedi funzione getStepContent*/}
             {this.getStepContent()}
               <div className={classes.continueButton}> {/*stile bottone vedi supra la funzione*/}
                 <div>
@@ -198,7 +192,6 @@ CreateBookStepper.propTypes = {
   classes: PropTypes.object,
   match: PropTypes.object,
   history: PropTypes.object,
-  language: PropTypes.string,
   enqueueSnackbar: PropTypes.func,
 };
 export default withSnackbar(

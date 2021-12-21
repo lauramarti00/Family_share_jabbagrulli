@@ -1,20 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { Skeleton } from "antd";
 import { withRouter } from "react-router-dom";
-import moment from "moment";
-import Texts from "../Constants/Texts";
 import withLanguage from "./LanguageContext";
 import Log from "./Log";
 import Avatar from "./Avatar";
 
 
-const getUsersChildren = (userId) => {
+const getBooks = (groupId) => {
   return axios
-    .get(`/api/users/${userId}/children`)
+    .get(`/api/book/list/${groupId}/`)
     .then((response) => {
-      return response.data.map((child) => child.child_id);
+      return response.data.map((book) => book.book_id);
     })
     .catch((error) => {
       Log.error(error);
@@ -22,115 +19,33 @@ const getUsersChildren = (userId) => {
     });
 };
 
-const getTimeslots = (groupId, activityId) => {
-  return axios
-    .get(`/api/groups/${groupId}/activities/${activityId}/timeslots`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      Log.error(error);
-      return [];
-    });
-};
 
 class BookListItem extends React.Component {
   constructor(props) {
     super(props);
     const { activity, } = this.props;
-    this.state = { fetchedTimeslots: false, activity, image:"", };
+    this.state = {activity,};
   }
 
   async componentDidMount() {
     const { activity } = this.state;
-    const userId = JSON.parse(localStorage.getItem("user")).id;
+    //const userId = JSON.parse(localStorage.getItem("books")).id;
     const { groupId } = this.props;
-    const activityId = activity.activity_id;
-    const usersChildren = await getUsersChildren(userId);
-    const timeslots = await getTimeslots(groupId, activityId);
-    let dates = timeslots.map((timeslot) => timeslot.start.dateTime);
-    dates = dates.sort((a, b) => {
-      return new Date(a) - new Date(b);
-    });
-    const uniqueDates = [];
-    const temp = [];
-    dates.forEach((date) => {
-      const t = moment(date).format("DD-MM-YYYY");
-      if (!temp.includes(t)) {
-        temp.push(t);
-        uniqueDates.push(date);
-      }
-    });
-    activity.subscribed = false;
-    for (let i = 0; i < timeslots.length; i += 1) {
-      const parents = JSON.parse(
-        timeslots[i].extendedProperties.shared.parents
-      );
-      const children = JSON.parse(
-        timeslots[i].extendedProperties.shared.children
-      );
-      const userSubscribed = parents.includes(userId);
-      let childrenSubscribed = false;
-      for (let j = 0; j < usersChildren.length; j += 1) {
-        if (children.includes(usersChildren[j])) {
-          childrenSubscribed = true;
-          break;
-        }
-      }
-      if (userSubscribed || childrenSubscribed) {
-        activity.subscribed = true;
-        break;
-      }
-    }
-    activity.dates = uniqueDates;
-    this.setState({ fetchedTimeslots: true, activity });
+    //const activityId = activity.activity_id;
+    await getBooks(groupId);
+    this.setState({ activity });
   }
-
 
   //mi reinderizza alla pagina informazioni del libro
   handleActivityClick = (event) => {
     const { history } = this.props;
-    const { pathname } = history.location;
+    // const { pathname } = history.location;
     history.push(`/infoBook/${event.currentTarget.id}`); // new vicky, porta alla scheda informazioni libro
   };
 
-  getDatesString = () => {
-    const { language } = this.props;
-    const { activity } = this.state;
-    const selectedDates = activity.dates;
-    const texts = Texts[language].activityListItem;
-    let datesString = "";
-    if (activity.repetition_type === "monthly") {
-      datesString = `${texts.every} ${moment(selectedDates[0]).format("Do")}`;
-    } else {
-      const eachMonthsDates = {};
-      selectedDates.forEach((selectedDate) => {
-        const key = moment(selectedDate).format("MMMM YYYY");
-        if (eachMonthsDates[key] === undefined) {
-          eachMonthsDates[key] = [selectedDate];
-        } else {
-          eachMonthsDates[key].push(selectedDate);
-        }
-      });
-      const months = Object.keys(eachMonthsDates);
-      const dates = Object.values(eachMonthsDates);
-      for (let i = 0; i < months.length; i += 1) {
-        let monthString = "";
-        dates[i].forEach((date) => {
-          monthString += ` ${moment(date).format("DD")},`;
-        });
-        monthString = monthString.substr(0, monthString.length - 1);
-        monthString += ` ${months[i]}`;
-        datesString += ` ${monthString}, `;
-      }
-      datesString = datesString.substr(0, datesString.length - 2);
-    }
-    return datesString;
-  };
-
   render() {
-    const { activity, fetchedTimeslots } = this.state;
-    return fetchedTimeslots ? (
+    const { activity } = this.state;
+    return (
       <React.Fragment>
         <div
           role="button"
@@ -180,9 +95,7 @@ class BookListItem extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    ) : (
-      <Skeleton avatar active paragraph={{ rows: 1 }} />
-    );
+    )
   }
 }
 
