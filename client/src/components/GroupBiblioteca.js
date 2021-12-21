@@ -7,7 +7,6 @@ import withLanguage from "./LanguageContext";
 import Texts from "../Constants/Texts";
 import ActivityOptionsModal from "./OptionsModal";
 import BookListItem from "./BookListItem";
-import PlanListItem from "./PlanListItem";
 import ConfirmDialog from "./ConfirmDialog";
 import Log from "./Log";
 
@@ -65,17 +64,7 @@ const fetchBook = (groupId) => {
     });
 };
 
-const fetchPlans = (groupId) => {
-  return axios
-    .get(`/api/groups/${groupId}/plans`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      Log.error(error);
-      return [];
-    });
-};
+
 
 class GroupBiblioteca extends React.Component {
   constructor(props) {
@@ -92,18 +81,12 @@ class GroupBiblioteca extends React.Component {
   async componentDidMount() {
     const { group } = this.state;
     const { group_id: groupId } = group;
-    //const book = await fetchActivites(groupId);
     const book = await fetchBook(groupId);
-    const plans = await fetchPlans(groupId);
-    //const acceptedActivities = activities.filter(
-    //  (activity) => activity.status === "accepted"
-    //);
-    //const pendingActivities = activities.length - acceptedActivities.length;
+    //const plans = await fetchPlans(groupId);
     this.setState({
       confirmDialogIsOpen: false,
       fetchedData: true,
       activities: book,
-      plans,
     });
   }
 /* TODO: rimuovere if da path path a fine applicazione*/
@@ -124,7 +107,7 @@ class GroupBiblioteca extends React.Component {
 
   /*visualizza le attività nella biblioteca, chiama la funzione BookListItem*/
   renderActivities = () => {
-    const { group, activities } = this.state;
+    const { activities } = this.state;
     //const { group_id: groupId } = group;
     return (
       <ul>
@@ -137,7 +120,7 @@ class GroupBiblioteca extends React.Component {
     );
   };
 
-  /*penso serva a creare qualcosa*/
+  /*
   renderPlans = () => {
     const { group, plans } = this.state;
     const { group_id: groupId } = group;
@@ -151,6 +134,7 @@ class GroupBiblioteca extends React.Component {
       </ul>
     );
   };
+  */
 
   handleModalOpen = () => {
     this.setState({ optionsModalIsOpen: true });
@@ -205,7 +189,6 @@ class GroupBiblioteca extends React.Component {
       pendingActivities,
       showAddOptions,
       fetchedData,
-      plans,
     } = this.state;
     const { name } = group;
     const texts = Texts[language].groupActivities;
@@ -308,6 +291,7 @@ class GroupBiblioteca extends React.Component {
                 color="primary"
                 aria-label="addBook"
                 className={classes.addBook}
+                //bottone che mi porta ad aggiungilibro /vedi stepper information etc/
                 onClick={() => this.add("aggiungilibro")}
               >
                 <i className="fas fa-book" />
@@ -328,6 +312,7 @@ class GroupBiblioteca extends React.Component {
                 color="primary"
                 aria-label="myBooks"
                 className={classes.myBooks}
+                //TODO io lo farei minuscolo es: mybooks
                 onClick={() => this.add("myBooks")}//attacca all'url il testo tra apici
               >
                 <i className="fas fa-calendar" />
@@ -342,12 +327,13 @@ class GroupBiblioteca extends React.Component {
               {this.renderActivities()}
             </div>
           )}
+          {/*
           {fetchedData && plans.length > 0 && (
             <div id="groupActivitiesContainer" className="horizontalCenter">
               <h1 className="">{texts.plansHeader}</h1>
               {this.renderPlans()}
             </div>
-          )}
+          )}*/}
         </div>
       </div>
     );

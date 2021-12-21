@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Images from "../Constants/Images";
 
 const BackNavigation = ({ onClick, title }) => {
     return (
@@ -78,15 +76,14 @@ class Book extends Component {
     const buttonStyle = { minHeight: "10rem" };
     return (
     <React.Fragment>
-   <div>
-        <div className="row no-gutters" style={rowStyle}>
-        <BackNavigation
-          title={this.state.title}
-          onClick={this.backNavClick}
-         
-        />   
-   </div>  
-           
+  <div>
+    <div className="row no-gutters" style={rowStyle}>
+      <BackNavigation
+        title={this.state.title}
+        onClick={this.backNavClick}
+        
+      />   
+   </div>    
         <div id="activityMainContainer">
             <div className="row no-gutters" style={rowStyle}>
               <div className="activityInfoHeader">Title: {(this.state.title).toUpperCase()}</div>
@@ -115,7 +112,6 @@ class Book extends Component {
                 </div>
               </div>
             )}
-
             <div className="row no-gutters" style={buttonStyle}  >
             <div className="col-1-10"></div>
           <button onClick={this.editClick} className="btn btn-primary col-1-10" >EDIT</button>
@@ -126,7 +122,6 @@ class Book extends Component {
             </div>
         <div id = "end" style={rowStyle}>          
             </div>
-          
     </div>
     </React.Fragment>
     )

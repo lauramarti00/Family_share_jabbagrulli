@@ -5,10 +5,10 @@ let Book = require('../models/book')
 // prendere tutti gli elementi
 router.route('/list/:groupId').get((req, res) => {
   Book.find()// ritorna una lista di tutti gli elementi
-    .then(books => res.json(books.filter(function(book) {
-      return book.groupId == req.params.groupId
+    .then(books => res.json(books.filter(function (book) {
+      return book.groupId === req.params.groupId
     })))// ritorna in json format
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json('Error: ' + err))
 })
 
 // aggiungere elementi

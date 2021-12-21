@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import autosize from "autosize";
 import withLanguage from "./LanguageContext";
-import Texts from "../Constants/Texts";
 import * as path from "lodash.get";
 
 
@@ -19,24 +18,28 @@ class CreateBookInformation extends React.Component {
       file
     } = this.props;
     this.state = {  description, author, title, image, file };
+    //funzione che riporta a CreateBookStepper
     handleSubmit(this.state, this.validate(this.state));
+    //funzione che riporta a CreateBookStepper
     handleImageSubmit(this.state);
     autosize(document.querySelectorAll("textarea"));
   }
 
   validate = (state) => {
-    if (state.color && state.title) {
+    if (state.author && state.title) {
       return true;
     }
     return false;
   };
 
   handleChange = (event) => {
+    //funzione Object.assign vedi documentazione
     const state = Object.assign({}, this.state);
-    //SE MODIFICO NAME CON TITLE
+    //prendo il name name e value da event cioè dalle funzioni di input del render
     const { name, value } = event.target;
     const { handleSubmit } = this.props;
     //SE MODIFICO NAME CON TITLE NON MI DA L'ANTEPRIMA DI SCRITTURA, VEDI FUNZIONE SOTTO
+    //funzione props da mandare a Stepper
     state[name] = value;
     handleSubmit(state, this.validate(state));
     console.log(state)
@@ -69,7 +72,7 @@ class CreateBookInformation extends React.Component {
     }
   };
 
-  
+  //non lo zo
   handleNativeImageChange = () => {
     window.ReactNativeWebView.postMessage(
       JSON.stringify({ action: "fileUpload" })
@@ -78,10 +81,7 @@ class CreateBookInformation extends React.Component {
   //----------------------------------------------------------
 
   render() {
-
-    const { language } = this.props;
-    const { title, description, author, image, file } = this.state;
-    const texts = Texts[language].createBookInformation;
+    const { title, description, author, image,} = this.state;
     const rowStyle = { minHeight: "7rem" };
     return (
       <div id="createBookInformationContainer">
@@ -102,24 +102,6 @@ class CreateBookInformation extends React.Component {
         </div>
         <div className="row no-gutters" style={rowStyle}>
           <div className="col-2-10">
-            <i className="fas fa-align-left center" />
-          </div>
-          <div className="col-8-10">
-            <textarea
-              rows="1"
-              name="description"
-              className="center"
-              placeholder={texts.description}
-              value={description}
-              onChange={(event) => {
-                this.handleChange(event);
-                autosize(document.querySelectorAll("textarea"));
-              }}
-            />
-          </div>
-        </div>
-        <div className="row no-gutters" style={rowStyle}>
-          <div className="col-2-10">
             <i className="fas fa-user-alt center" />
           </div>
           <div className="col-8-10">
@@ -134,10 +116,27 @@ class CreateBookInformation extends React.Component {
           </div>
         </div>
         <div className="row no-gutters" style={rowStyle}>
+          <div className="col-2-10">
+            <i className="fas fa-align-left center" />
+          </div>
+          <div className="col-8-10">
+            <textarea
+              rows="1"
+              name="description"
+              className="center"
+              placeholder="Descrizione (Facoltativo)"
+              value={description}
+              onChange={(event) => {
+                this.handleChange(event);
+                autosize(document.querySelectorAll("textarea"));
+              }}
+            />
+          </div>
+        </div>
+        <div className="row no-gutters" style={rowStyle}>
             <div className="col-2-10">
               <i className="fas fa-camera center" />
             </div>
-
             <div className="col-7-10">
             <div id="uploadGroupLogoContainer">
               <label
@@ -170,7 +169,7 @@ class CreateBookInformation extends React.Component {
                   alt="user profile logo"
                   className="horizontal square right"
                 />
-                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -184,8 +183,9 @@ CreateBookInformation.propTypes = {
   author: PropTypes.string,
   description: PropTypes.string,
   handleSubmit: PropTypes.func,
-  language: PropTypes.string,
+  handleImageSubmit: PropTypes.func,
   image: PropTypes.object,
+  file: PropTypes.object
 };
 
 export default withLanguage(CreateBookInformation);
