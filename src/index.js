@@ -73,6 +73,7 @@ app.use('/api/github', require('./routes/github-routes'))
 app.use('/api/community', require('./routes/community-routes'))
 // crea la root per book
 app.use('/api/book', require('./routes/book-routes'))
+app.use('/api/loan', require('./routes/loan-routes'))
 
 if (config.util.getEnv('NODE_ENV') === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')))
