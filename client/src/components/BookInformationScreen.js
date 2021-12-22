@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PropTypes from "prop-types";
+import { Link } from 'react-router-dom';
 
 const BackNavigation = ({ onClick, title }) => {
     return (
@@ -15,6 +16,34 @@ const BackNavigation = ({ onClick, title }) => {
       </div>
     );
 };
+
+const Loan = props => (
+  <tr>
+    <td>{props.loan.userName}</td>
+    <td>{props.loan.userSurname}</td>
+    <td>{props.loan.userEmail}</td>
+    <td>
+      <Link to={"/editLoan/"+props.loan._id}>conferma</Link> | <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>delete</a>
+    </td>
+  </tr>
+)
+
+const user_loan = (id) => {
+  axios.get('/api/users/'+id+'/profile')
+        .then(response => {
+          const user = {
+            name: response.data.given_name,
+            surname: response.data.family_name,
+            email: response.data.email,              
+          }  
+       
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+}
+
+
 //TODO: da sistemare
 class Book extends Component {
   constructor(props) {
@@ -30,6 +59,7 @@ class Book extends Component {
       name:'',
       surname:'',
       email:'',
+      loans: []
     }
   }
 
@@ -57,6 +87,37 @@ class Book extends Component {
       .catch(function (error) {
         console.log(error);
       })
+
+      axios.get('/api/loan/loanlist/'+this.props.match.params.id)
+      .then(response => {
+          this.setState({
+            loans: response.data,              
+          })       
+         
+      })
+      .catch(function (error) {
+        console.log(error);        
+      })        
+  }
+
+  deleteLoan(id,bookid) {
+    
+    console.log(bookid);
+    axios.delete('/api/loan/'+id)
+      .then(response => { console.log(response.data);
+        
+        window.location = `/infoBook/${bookid}`;
+      })
+      .catch(function (error) {
+        console.log(error);        
+      })     
+  }
+
+  loanList() {
+    return this.state.loans.map(currentloan => {
+      
+      return <Loan loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+    })
   }
 
 
@@ -82,19 +143,38 @@ class Book extends Component {
   };
 
   // aggiungi prestiti
-  loanClick = (event) => {
+  loanClick = async (event) => {
     const user = localStorage.getItem("user"); // l'utente logato al momento
     const loan = {
       book: this.props.match.params.id, // id dall'URL
       ownerId: this.state.userId,
       userId: JSON.parse(user).id,
+      userName: "",
+      userSurname: "",
+      userEmail: "",
       reqDate: new Date(), 
     }
-    axios.post('/api/loan/add',loan)
+
+    await axios.get('/api/users/'+loan.userId+'/profile')
+        .then(response => {
+          
+          loan.userName = response.data.given_name
+          loan.userSurname =  response.data.family_name
+          loan.userEmail = response.data.email           
+          
+       
+      }).catch(function (error) {
+        console.log(error);        
+      })
+
+    console.log(loan)
+    await axios.post('/api/loan/add',loan)
     .then(response => { console.log(response.data)})
     .catch(function (error) {
       console.log(error);        
     })
+
+    window.location = `/infoBook/${this.props.match.params.id}`;
   
   };
 
@@ -107,6 +187,7 @@ class Book extends Component {
   render() {   
     const rowStyle = { minHeight: "5rem" };
     const buttonStyle = { minHeight: "10rem" };
+    console.log(this.state.loans)
     return (
     <React.Fragment>
   <div>
@@ -178,8 +259,25 @@ class Book extends Component {
             )}
             
             </div>
-        <div id = "end" style={rowStyle}>          
-            </div>
+        <div id = "end" style={rowStyle}>   
+
+        <div id = "end" style={rowStyle}>       
+        <h3>Logged Loans</h3>
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+              <th>name</th>
+              <th>surname</th>
+              <th>email</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.loanList() }
+          </tbody>
+        </table>
+        </div>
+              
+        </div>
     </div>
     </React.Fragment>
     )

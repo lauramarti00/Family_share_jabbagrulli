@@ -6,6 +6,9 @@ const loanSchema = new Schema({
   book: { type: String, required: true, trim: true }, // trim => cancella spazi alla fine
   ownerId: { type: String, required: true, trim: true },
   userId: { type: String, required: true, trim: true },
+  userName: { type: String, required: true, trim: true },
+  userSurname: { type: String, required: true, trim: true },
+  userEmail: { type: String, required: true, trim: true },
   // data di richiesta del prestito da parte dell'utente
   reqDate: { type: Date, required: true, trim: true}, 
   // data di inizio del prestito, decisa dal proprietario (NON E' REQUIRED, INIZIALMENTE UNDEFINED, LA SETTO QUANDO VIENE ACCETTATO IL PRESTITO)

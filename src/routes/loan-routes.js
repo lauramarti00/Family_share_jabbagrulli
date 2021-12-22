@@ -60,6 +60,9 @@ router.route('/update/:id').post((req, res) => {
         Loan.end = req.body.end
         Loan.accepted = req.body.accepted 
         Loan.current = req.body.current
+        Loan.userName = req.body.userName
+        Loan.userSurname = req.body.userSurname
+        Loan.userEmail = req.body.userEmail
         //Loan.returned = req.body.returned
 
       Loan.save()
@@ -74,7 +77,11 @@ router.route('/add').post( (req, res) => {
   const book = req.body.book;
   const ownerId = req.body.ownerId;
   const userId = req.body.userId;
+  const userName = req.body.userName
+  const userSurname = req.body.userSurname
+  const userEmail = req.body.userEmail
   const reqDate = req.body.reqDate;
+  
   
   // li ho dichiarati lo stesso anche se undefined perchè al costruttore devo passare i parametri in ordine
   const start=undefined;
@@ -88,6 +95,9 @@ router.route('/add').post( (req, res) => {
     book,
     ownerId,
     userId,
+    userName,
+    userSurname,
+    userEmail,
     reqDate,
     start,
     end,

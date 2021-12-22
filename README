@@ -15,4 +15,13 @@ PROBLEMA: bisogna sistare le richieste di get '/' prende un group, deve filtrare
 
 -------------------------------------------------------------------------------------------------------
 
-Push di prova per il branch
+NOME: LAURA
+FILE: components/BookInformationScreen
+PROBLEMA: quando l'utente preme su prenota, il bottone deve cambiare e deve comparire annulla prenotazione.
+TODO: 
+1. CONFERMA prenotazione => giorni di prestito, si può confermare solo 1 e solo quello in cima alla lista, ordinare la lista per data
+2. ANNULLA prenotazione // da parte del non proprietario => cancellazione prestito
+3. RIFIUTA prenotazione => cancellazione prestito
+4. CONFERMA restituzione => cancellazione prestito
+
+
