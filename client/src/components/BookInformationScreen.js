@@ -146,6 +146,23 @@ class Book extends Component {
               </div>
             )}
 
+            <div className="row no-gutters" style={rowStyle}>
+            <div className="col-1-10"></div>
+            </div>
+             
+            {this.state.name && this.state.surname && this.state.email &&(
+              <div className="row no-gutters" style={rowStyle}>
+                <div className="col-1-10">                  
+                </div>
+                <div className="col-9-10">
+                  <div className="activityInfoDescription">
+                    <p className="activityInfoDescription">Proprietario: {this.state.name}  {this.state.surname}</p>
+                    <p className="activityInfoDescription">Email: {this.state.email}</p>
+                  </div>
+                </div>
+              </div>
+            )}    
+
             {this.current_user() ?(
             <div className="row no-gutters" style={buttonStyle}  >
             <div className="col-1-10"></div>            
