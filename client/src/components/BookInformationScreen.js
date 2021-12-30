@@ -73,6 +73,8 @@ const Loan1 = props => (
           axios.post('/api/loan/update/'+props.loan._id,loan)
           .then(res => console.log(res.data));
 
+          window.location.reload();
+
         }
         }
         ></DateRangePickerComponent>
@@ -149,7 +151,7 @@ class Book extends Component {
     axios.delete('/api/loan/'+id)
       .then(response => { console.log(response.data);
         
-        window.location = `/infoBook/${bookid}`;
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error);        
@@ -181,10 +183,10 @@ class Book extends Component {
   //eliminare libro
   deleteClick = (event) => {
     const groupId = this.state.groupId
+    const { history } = this.props;
     axios.delete('/api/book/'+this.props.match.params.id)
     .then(response => { console.log(response.data)});
-  //TODO: mettere history
-    window.location = `/groups/${groupId}/Biblioteca`; //schermata biblioteca
+    history.goBack();//schermata biblioteca
   };
 
   // aggiungi prestiti
@@ -220,7 +222,7 @@ class Book extends Component {
       console.log(error);        
     })
 
-    window.location = `/infoBook/${this.props.match.params.id}`;
+    window.location.reload();
   
   };
 
