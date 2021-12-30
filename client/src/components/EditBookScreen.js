@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import autosize from "autosize";
+import PropTypes from "prop-types";
 
 const style = {
   minHeight: 200,
 };
 
-
+// barra navigazione
 const BackNavigation = ({ onClick, title }) => {
   return (
     <div
@@ -21,8 +22,7 @@ const BackNavigation = ({ onClick, title }) => {
   );
 };
 
-//TODO: da sistemare
-export default class EditBook extends Component {
+class EditBook extends Component {
   constructor(props) {
     super(props);
 
@@ -91,20 +91,17 @@ export default class EditBook extends Component {
 
   }
 
- //tornare indietro
- backNavClick = (event) => {
-  window.location = `/infoBook/${this.props.match.params.id}`; 
-};
 
   render() {
     const rowStyle = { minHeight: "5rem" };
     const buttonStyle = { minHeight: "6rem" };
+    const { history, language } = this.props; 
     return (
     
     <div>
       <BackNavigation
-          title={this.state.title}
-          onClick={this.backNavClick}
+          title={`MODIFICA IL LIBRO " ${(this.state.title).toUpperCase()} "`}
+          onClick={() => history.goBack()}
         />  
 
       <form onSubmit={this.onSubmit}>
@@ -164,7 +161,7 @@ export default class EditBook extends Component {
         </div>
         <div className="form-group col-9-10" style={buttonStyle}></div>
         <div className="form-group col-9-10" style={buttonStyle}>
-          <input type="submit" value="EDIT" className="btn btn-primary" />
+          <input type="submit" value="CONFERMA MODIFICHE" className="btn btn-primary" />
         </div>
       </div>
             
@@ -175,3 +172,9 @@ export default class EditBook extends Component {
     )
   }
 }
+
+EditBook.propTypes = {
+  history: PropTypes.object,
+};
+
+export default EditBook;

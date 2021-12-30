@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import './DatePick.css';
 import axios from 'axios';
 import PropTypes from "prop-types";
-import { Link } from 'react-router-dom';
+import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 
+
+//barra di navigazione 
 const BackNavigation = ({ onClick, title }) => {
     return (
       <div
@@ -17,34 +20,69 @@ const BackNavigation = ({ onClick, title }) => {
     );
 };
 
-const Loan = props => (
+//vista del prestito corrente  se il libro è in prestito
+const Loan3 = props => (
   <tr>
     <td>{props.loan.userName}</td>
     <td>{props.loan.userSurname}</td>
-    <td>{props.loan.userEmail}</td>
+    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`}>{props.loan.userEmail}</a></td>
     <td>
-      <Link to={"/editLoan/"+props.loan._id}>conferma</Link> | <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>delete</a>
+        <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>CONFERMA RESTITUZIONE</a>
     </td>
   </tr>
 )
 
-const user_loan = (id) => {
-  axios.get('/api/users/'+id+'/profile')
-        .then(response => {
-          const user = {
-            name: response.data.given_name,
-            surname: response.data.family_name,
-            email: response.data.email,              
-          }  
-       
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-}
+//vista normale del prestito non corrente
+const Loan2 = props => (
+  <tr>
+    <td>{props.loan.userName}</td>
+    <td>{props.loan.userSurname}</td>
+    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`}>{props.loan.userEmail}</a></td>
+    <td>
+      <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>ELIMINA</a>
+    </td>
+  </tr>
+)
+
+// constatnti per il tempo di prestito
+const startValue = new Date(new Date().getFullYear(), new Date().getMonth());
+const endValue = new Date(new Date().getFullYear(), new Date().getMonth() + 7);
+const minDate = new Date(new Date().getFullYear(), new Date().getMonth());
+
+// vista del prestito primo della coda
+const Loan1 = props => (
+  <tr>
+    <td>{props.loan.userName}</td>
+    <td>{props.loan.userSurname}</td>
+    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`}>{props.loan.userEmail}</a></td>
+    <td>
+    <div>
+        <DateRangePickerComponent placeholder="Enter Date Range"
+        startDate={startValue}
+        endDate={endValue}
+        min={minDate}
+        minDays={7}
+        maxDays={120}
+        format="dd-MMM-yy"
+        onChange = {(date) =>{
+          const loan = props.loan;
+          loan.start = date.value[0];
+          loan.end = date.value[1];
+          loan.accepted = true;
+
+          axios.post('/api/loan/update/'+props.loan._id,loan)
+          .then(res => console.log(res.data));
+
+        }
+        }
+        ></DateRangePickerComponent>
+        | <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>ELIMINA</a>
+      </div>
+    </td>
+  </tr>
+)
 
 
-//TODO: da sistemare
 class Book extends Component {
   constructor(props) {
     super(props);
@@ -88,10 +126,13 @@ class Book extends Component {
         console.log(error);
       })
 
+      // lista prestiti per il libro
       axios.get('/api/loan/loanlist/'+this.props.match.params.id)
       .then(response => {
           this.setState({
-            loans: response.data,              
+            loans: (response.data).sort(function(a,b){
+              return new Date(b.date) - new Date(a.date);
+            }),              
           })       
          
       })
@@ -100,6 +141,8 @@ class Book extends Component {
       })        
   }
 
+
+  // eliminazione di un prestito
   deleteLoan(id,bookid) {
     
     console.log(bookid);
@@ -113,24 +156,26 @@ class Book extends Component {
       })     
   }
 
+  // vista solo del proprietario
   loanList() {
     return this.state.loans.map(currentloan => {
-      
-      return <Loan loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+
+      if (this.state.loans.indexOf(currentloan) == 0)    {
+        if(currentloan.accepted == false)
+          return <Loan1 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+        else
+        return <Loan3 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+      }  
+        
+      else
+        return <Loan2 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
     })
   }
 
-
-  //tornare indietro
-  backNavClick = (event) => {
-    //TODO: mettere history
-    window.location = '/groups/'+this.state.groupId+'/Biblioteca'; //schermata biblioteca
-  };
-
   //editare il libro
   editClick = (event) => {
-      //TODO: mettere history
-    window.location = `/editBook/${this.props.match.params.id}`; // schermata editBook
+    const { history } = this.props;
+    history.push(`/editBook/${this.props.match.params.id}`); // schermata editBook
   };
 
   //eliminare libro
@@ -153,6 +198,7 @@ class Book extends Component {
       userSurname: "",
       userEmail: "",
       reqDate: new Date(), 
+      
     }
 
     await axios.get('/api/users/'+loan.userId+'/profile')
@@ -178,29 +224,31 @@ class Book extends Component {
   
   };
 
+  // funzione booleana che mi dice se l'utente corrente è il proprietario o meno
   current_user = ()=>{
     const user = localStorage.getItem("user");
     return JSON.parse(user).id == this.state.userId;
-  }
+  } 
 
-  
-  render() {   
+  render() {  
+    const { history, language } = this.props; 
     const rowStyle = { minHeight: "5rem" };
     const buttonStyle = { minHeight: "10rem" };
-    console.log(this.state.loans)
+    console.log(this.state.loans)   
+
     return (
     <React.Fragment>
   <div>
     <div className="row no-gutters" style={rowStyle}>
       <BackNavigation
-        title={this.state.title}
-        onClick={this.backNavClick}
+        title={`LIBRO  " ${(this.state.title).toUpperCase()} "`}
+        onClick={() => history.goBack()}
         
       />   
    </div>    
         <div id="activityMainContainer">
             <div className="row no-gutters" style={rowStyle}>
-              <div className="activityInfoHeader">Title: {(this.state.title).toUpperCase()}</div>
+              <div className="activityInfoHeader">TITOLO DEL LIBRO: {(this.state.title).toUpperCase()}</div>
             </div>
             {this.state.author && (
               <div className="row no-gutters" style={rowStyle}>
@@ -238,7 +286,7 @@ class Book extends Component {
                 <div className="col-9-10">
                   <div className="activityInfoDescription">
                     <p className="activityInfoDescription">Proprietario: {this.state.name}  {this.state.surname}</p>
-                    <p className="activityInfoDescription">Email: {this.state.email}</p>
+                    <p className="activityInfoDescription">Email: <a href={`mailto:${this.state.email}`}>{this.state.email}</a></p>
                   </div>
                 </div>
               </div>
@@ -247,9 +295,9 @@ class Book extends Component {
             {this.current_user() ?(
             <div className="row no-gutters" style={buttonStyle}  >
             <div className="col-1-10"></div>            
-            <button onClick={this.editClick} className="btn btn-primary col-1-10" >EDIT</button>
+            <button onClick={this.editClick} className="btn btn-primary col-1-10" >MODIFICA</button>
             <div className="col-1-10"></div>
-            <button onClick={this.deleteClick} className="btn btn-danger col-1-10" >DELETE</button>
+            <button onClick={this.deleteClick} className="btn btn-danger col-1-10" >CANCELLA</button>
             </div>
             ):(
             <div className="row no-gutters" style={buttonStyle}  >
@@ -261,22 +309,23 @@ class Book extends Component {
             </div>
         <div id = "end" style={rowStyle}>   
 
+        {this.current_user() ?(
         <div id = "end" style={rowStyle}>       
-        <h3>Logged Loans</h3>
+        
         <table className="table">
           <thead className="thead-light">
             <tr>
-              <th>name</th>
-              <th>surname</th>
-              <th>email</th>
+              <th>NOME</th>
+              <th>COGNOME</th>
+              <th>EMAIL</th>
             </tr>
           </thead>
           <tbody>
             { this.loanList() }
           </tbody>
         </table>
-        </div>
-              
+        </div>):(<div></div>)}             
+        
         </div>
     </div>
     </React.Fragment>
