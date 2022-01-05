@@ -42,6 +42,7 @@ const Book = props => (
     <td>{props.book.author}</td>
     <td>{props.book.title}</td>
     <td>{props.book.accepted}</td>
+    
   </tr>
 )
 
@@ -59,6 +60,17 @@ const LoanNotAccepted = props => (
     <td> 
     <button type="button" id = "delete" className="btn btn-danger" onClick={() => { props.deleteLoan(props.loan._id) }}>
     ANNULLA PRENOTAZIONE</button>
+    </td>
+  </tr>
+)
+
+const LoanAnnuled = props => (
+  <tr>
+    <td>{props.loan.bookName}</td>
+    <td>PRESTITO ANNULLATO</td>
+    <td> 
+    <button type="button" id = "delete" className="btn btn-warning" onClick={() => { props.deleteLoan(props.loan._id) }}>
+    OK</button>
     </td>
   </tr>
 )
@@ -109,6 +121,7 @@ class MyBooksScreen extends React.Component {
       .catch(function (error) {
         console.log(error);        
       })     
+      alert("Hai eliminato la richiesta");
   }
 
 
@@ -117,12 +130,15 @@ class MyBooksScreen extends React.Component {
     const loans = this.state.loanbooks
     
     return this.state.mybooks.map(currentbook => {
-      
       loans.forEach(loan => {
-        if(loan.book == currentbook._id)
-            currentbook.accepted = "PRENOTATO";
+        if(loan.book == currentbook._id){
+            currentbook.accepted = "PRENOTATO dal "+new Date(loan.start).toLocaleDateString()+" al "+new Date(loan.end).toLocaleDateString();
+            currentbook.start = loan.start;
+            currentbook.end = loan.end;
+          }
         else
             currentbook.accepted = "NON PRENOTATO";
+        
       })
       
       return <Book book={currentbook} key={currentbook._id}/>;
@@ -137,8 +153,14 @@ class MyBooksScreen extends React.Component {
     }).map(currentloan => {
       if(currentloan.accepted == true)
         return <LoanAccepted loan={currentloan} key={currentloan._id}/>;
-      else
-        return <LoanNotAccepted loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+      else{
+        if(currentloan.current == true)
+          return <LoanNotAccepted loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+        else
+        return <LoanAnnuled loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+      }
+
+        
     })
   }
 

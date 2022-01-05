@@ -89,11 +89,68 @@ class GroupInfo extends React.Component {
       });
   };
 
+
   handleLeave = () => {
     const { group } = this.state;
     const { group_id: groupId } = group;
     const { history } = this.props;
     const userId = JSON.parse(localStorage.getItem("user")).id;
+
+    // ELIMINO TUTTI I PRESTITI
+    axios
+      .get(`/api/loan/loanlistgroupId/${groupId}`)
+      .then((response) => {
+        const loans = response.data
+        loans.forEach(loan =>{
+          //cancello ogni suo prestito
+          if(loan.userId == userId){
+          axios.
+          delete('/api/loan/'+loan._id)
+        .then(response => { console.log(response.data);
+        })}
+        })
+      })
+      .catch((error) => {
+        Log.error(error);
+      });
+
+
+    
+
+
+    //ELIMINA I SUOI LIBRI NEL GRUPPO
+    axios
+    .get(`/api/book/listperowner/${groupId}/${userId}`)
+    .then((response) => {
+      const books = response.data
+      books.forEach(book =>{
+
+        //ELIMINA I PRESTITI DEI SUOI LIBRI
+        axios
+        .get(`/api/loan/loanlist/${groupId}/${book._id}`)
+        .then((response) => {
+          const loansbook = response.data
+          loansbook.forEach(loan =>{
+            axios.delete('/api/loan/'+loan._id)
+          .then(response => { console.log(response.data);
+          })
+          })
+        })
+        .catch((error) => {
+          Log.error(error);
+        });
+
+        // ELIMINA OGNI LIBRO
+        axios.delete('/api/book/'+book._id)
+      .then(response => { console.log(response.data);
+      })
+      })
+    })
+    .catch((error) => {
+      Log.error(error);
+    });
+
+
     axios
       .delete(`/api/users/${userId}/groups/${groupId}`)
       .then((response) => {

@@ -27,7 +27,7 @@ const Loan3 = props => (
     <td>{(props.loan.userSurname).toUpperCase()}</td>
     <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`} className = 'btn btn-lg'>{props.loan.userEmail}</a></td>
     <td>
-        <button type="button" className="btn btn-success" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>CONFERMA RESTITUZIONE</button>
+        <button type="button" className="btn btn-success" onClick={() => { props.deleteLoan(props.loan._id) }}>CONFERMA RESTITUZIONE</button>
     </td>
   </tr>
 )
@@ -39,7 +39,7 @@ const Loan2 = props => (
     <td>{(props.loan.userSurname).toUpperCase()}</td>
     <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`} className = 'btn btn-light btn-lg'>{props.loan.userEmail}</a></td>
     <td>
-      <button type="button" id = "delete2" className="btn btn-danger" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>ELIMINA</button>
+      <button type="button" id = "delete2" className="btn btn-danger" onClick={() => { props.removeLoan(props.loan._id) }}>ELIMINA</button>
     </td>
   </tr>
 )
@@ -78,7 +78,7 @@ const Loan1 = props => (
         }
         }
         ></DateRangePickerComponent>
-        <button type="button" id = "delete1" className="btn btn-danger" onClick={() => { props.deleteLoan(props.loan._id) }}>ELIMINA</button>
+        <button type="button" id = "delete1" className="btn btn-danger" onClick={() => { props.removeLoan(props.loan._id) }}>ELIMINA</button>
       </div>
     </td>
   </tr>
@@ -148,28 +148,43 @@ class Book extends Component {
   deleteLoan(id) {
     axios.delete('/api/loan/'+id)
       .then(response => { console.log(response.data);
-        
+        alert("Hai confermato la restituzione del prestito");
         window.location.reload();
       })
       .catch(function (error) {
         console.log(error);        
       })     
+      
+  }
+
+  // annullamento di un prestito TODO: 
+  removeLoan(id) {
+    axios.post('/api/loan/current/'+id)
+      .then(response => { console.log(response.data);
+        alert("Hai annullato la richiesta prestito");
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);        
+      })    
+      
   }
 
   // vista solo del proprietario
   loanList() {
     return this.state.loans.map(currentloan => {
-
-      if (this.state.loans.indexOf(currentloan) === 0)    {
-        if(currentloan.accepted === false)
-          return <Loan1 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+      if(currentloan.current === true){
+        if (this.state.loans.indexOf(currentloan) === 0)    {
+          if(currentloan.accepted === false)
+            return <Loan1 loan={currentloan} removeLoan={this.removeLoan} key={currentloan._id}/>;
+          else
+          return <Loan3 loan={currentloan} deletLoan={this.deleteLoan} key={currentloan._id}/>;
+        }  
+          
         else
-        return <Loan3 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
-      }  
-        
-      else
-        return <Loan2 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
-    })
+          return <Loan2 loan={currentloan} removeLoan={this.removeLoan} key={currentloan._id}/>;
+      }
+    })    
   }
 
   //editare il libro
@@ -215,10 +230,10 @@ class Book extends Component {
       return f;
     }
 
-    // CONTROLLO SE HO GIA' PRENOTATO QUEL LIBRO
+    // CONTROLLO SE HO GIA' PRENOTATO QUEL LIBRO TODO: NON FUNZIONA
     if(flag(this.state.loans,JSON.parse(user).id)){
         // avvenuta già la prenotazione
-        console.log("prenotazione già effettuata")
+        alert("prenotazione già effettuata");
     }
     else{
       const loan = {
@@ -252,6 +267,7 @@ class Book extends Component {
       .catch(function (error) {
         console.log(error);        
       })
+      alert("prenotazione effettuata");
     }
   
   };

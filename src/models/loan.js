@@ -19,8 +19,8 @@ const loanSchema = new Schema({
   end: { type: Date, trim: true },  
   // se il prestito è stato accetto dal proprietario
   accepted: { type: Boolean, required: true , default: false }, 
-  // se il prestito è quello corrente nella coda
-  current: { type: Boolean, required: true , default: false},
+  // se il prestito è in coda
+  current: { type: Boolean, required: true , default: true},
   //returned: { type: Boolean, required: true }
 }, {
   timestamps: true,

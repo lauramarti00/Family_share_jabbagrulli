@@ -89,6 +89,7 @@ class EditBook extends Component {
     axios.post('/api/book/update/' + this.props.match.params.id, book)
       .then(res => console.log(res.data));
 
+    alert("Hai modificato il libro");
   }
 
 
@@ -103,7 +104,7 @@ class EditBook extends Component {
           title={`MODIFICA IL LIBRO " ${(this.state.title).toUpperCase()} "`}
           onClick={() => history.goBack()}
         />  
-
+      
       <form onSubmit={this.onSubmit}>
       <div id="activityMainContainer">
     <div className="row no-gutters" style={rowStyle}>

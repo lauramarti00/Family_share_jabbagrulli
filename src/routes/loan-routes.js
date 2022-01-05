@@ -101,7 +101,7 @@ router.route('/add').post( (req, res) => {
   const end=undefined;
   // inizialmente a false, se il propietario accetta true, se il propietario rfiuta cancello il prestito
   const accepted = false;
-  const current = false;
+  const current = true;
   //const returned = false;
 
   const newLoan = new Loan ({
@@ -145,12 +145,11 @@ router.route('/add').post( (req, res) => {
   })
 
 
-  // prestito corrente (il libro è stato portato a casa da un utente)
-  
+  // prestito non è più in coda  
   router.route('/current/:id').post((req, res) => {
     Loan.findById(req.params.id)
       .then(Loan => {          
-          Loan.current = true;
+          Loan.current = false;
         Loan.save()
           .then(() => res.json('Loan is current!'))
           .catch(err => res.status(400).json('Error: ' + err))
