@@ -99,6 +99,7 @@ class Book extends Component {
       name:'',
       surname:'',
       email:'',
+      thumbnail_path: '',
       loans: []
     }
   }
@@ -113,7 +114,8 @@ class Book extends Component {
           title: response.data.title,
           description: response.data.description,
           userId: response.data.userId,
-          groupId: response.data.groupId,            
+          groupId: response.data.groupId,     
+          thumbnail_path: response.data.thumbnail_path    
         })   
         axios.get('/api/users/'+response.data.userId+'/profile')
         .then(response => {
@@ -178,7 +180,7 @@ class Book extends Component {
           if(currentloan.accepted === false)
             return <Loan1 loan={currentloan} removeLoan={this.removeLoan} key={currentloan._id}/>;
           else
-          return <Loan3 loan={currentloan} deletLoan={this.deleteLoan} key={currentloan._id}/>;
+          return <Loan3 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
         }  
           
         else
@@ -198,22 +200,27 @@ class Book extends Component {
     const groupId = this.state.groupId
     const { history } = this.props;      
 
-    this.state.loans.forEach(loan => {
-      // cancello ogni loan
-      axios.delete('/api/loan/'+loan._id)
-      .then(response => { console.log(response.data);
-        
-        window.location.reload();
+    if(this.state.loans[0].accepted == true){
+      alert("Il libro è in prestito");
+    }
+    else{
+      this.state.loans.forEach(loan => {
+        // cancello ogni loan
+        axios.delete('/api/loan/'+loan._id)
+        .then(response => { console.log(response.data);
+          
+          window.location.reload();
+        })
+        .catch(function (error) {
+          console.log(error);        
+        })     
       })
-      .catch(function (error) {
-        console.log(error);        
-      })     
-    })
-    
-    axios.delete('/api/book/'+this.props.match.params.id)
-    .then(response => { console.log(response.data)});
+      
+      axios.delete('/api/book/'+this.props.match.params.id)
+      .then(response => { console.log(response.data)});
 
-    history.goBack();//schermata biblioteca
+      history.goBack();//schermata biblioteca
+    }
     
   };
 
@@ -315,8 +322,11 @@ class Book extends Component {
             ):(
             <div className="col-1-10" style={rowStyle}>{this.current_loan()}</div>       
             )}
-
             </div>
+
+
+            <div className="row no-gutters" style={rowStyle}>
+            <div className="col-4-10">
             {this.state.author && (
               <div className="row no-gutters" style={rowStyle}>
                 <div className="col-1-10">
@@ -341,6 +351,14 @@ class Book extends Component {
                 </div>
               </div>
             )}
+            </div>
+            <div className="col-6-10">
+            <img
+              src={this.state.thumbnail_path}
+              alt="avatar"
+            />
+            </div>
+            </div>
 
             <div className="row no-gutters" style={rowStyle}>
             <div className="col-1-10"></div>
@@ -402,6 +420,7 @@ class Book extends Component {
         </div>)}             
         
         </div>
+
     </div>
     </React.Fragment>
     )
