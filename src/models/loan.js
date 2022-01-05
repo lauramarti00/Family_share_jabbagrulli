@@ -4,8 +4,10 @@ const Schema = mongoose.Schema
 
 const loanSchema = new Schema({
   book: { type: String, required: true, trim: true }, // trim => cancella spazi alla fine
+  bookName: { type: String, required: true, trim: true },
   ownerId: { type: String, required: true, trim: true },
   userId: { type: String, required: true, trim: true },
+  groupId: { type: String, required: true, trim: true },
   userName: { type: String, required: true, trim: true },
   userSurname: { type: String, required: true, trim: true },
   userEmail: { type: String, required: true, trim: true },

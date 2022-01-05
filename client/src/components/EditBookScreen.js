@@ -107,12 +107,12 @@ class EditBook extends Component {
       <form onSubmit={this.onSubmit}>
       <div id="activityMainContainer">
     <div className="row no-gutters" style={rowStyle}>
-      <div className="activityInfoHeader">EDIT BOOK</div>
+      <div className="activityInfoHeader">MODIFICA LIBRO</div>
     </div>
     
       <div className="row no-gutters" style={rowStyle}>
         <div className="col-1-10">
-        Author : 
+        AUTORE : 
         </div>
         <div className="col-9-10 form-group">          
         <input  type="text"
@@ -126,7 +126,7 @@ class EditBook extends Component {
             
       
         <div className="col-1-10">
-        Title : 
+        TITOLO : 
         </div>
         <div className="col-9-10 form-group" >   
         <input  type="text"
@@ -141,8 +141,10 @@ class EditBook extends Component {
 
       <div className="row no-gutters" style={rowStyle}>
         <div className="col-1-10">
-          Description : 
+          DESCRIZIONE : 
         </div>
+        </div>
+        <div className="row no-gutters" style={rowStyle}>
         <div className="col-9-10">
         <textarea
           type = "text"

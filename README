@@ -27,4 +27,17 @@ TODO:
 
 METTERE IMMAGINE SU INFO LIBRO E SULLA LISTA DI LIBRI ( AIUTO KHIEM )
 
+TEST ESEGUITI DA VICTORIA:
+04/01/2022: ho provato a cancellare e modificare il libro, ma stranamente anche se il codice è corretto si è creato un bug ed elimina il
+prestito invece di eliminare il libro. Ogni bottone che schiaccio mi elimina il loan. 
+SISTEMATO => era sbagliato il css, mi rendeva tutto un div un bottone
+
+04/01/2022: se cancello un libro non mi ritorna alla pagina di prima. funziona ma non sempre. (?)
+
+04/01/2022: delete ogni loan quando cancello un libro, se è vuota la lista mi da problemi.
+SISTEMATO => errore di suntassi
+
+
+
+
 

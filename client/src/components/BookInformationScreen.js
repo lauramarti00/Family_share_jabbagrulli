@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './DatePick.css';
 import axios from 'axios';
-import PropTypes from "prop-types";
+import PropTypes, { element } from "prop-types";
 import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 
 
@@ -22,12 +22,12 @@ const BackNavigation = ({ onClick, title }) => {
 
 //vista del prestito corrente  se il libro è in prestito
 const Loan3 = props => (
-  <tr>
-    <td>{props.loan.userName}</td>
-    <td>{props.loan.userSurname}</td>
-    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`}>{props.loan.userEmail}</a></td>
+  <tr className="table-success">
+    <td>{(props.loan.userName).toUpperCase()}</td>
+    <td>{(props.loan.userSurname).toUpperCase()}</td>
+    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`} className = 'btn btn-lg'>{props.loan.userEmail}</a></td>
     <td>
-        <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>CONFERMA RESTITUZIONE</a>
+        <button type="button" className="btn btn-success" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>CONFERMA RESTITUZIONE</button>
     </td>
   </tr>
 )
@@ -35,11 +35,11 @@ const Loan3 = props => (
 //vista normale del prestito non corrente
 const Loan2 = props => (
   <tr>
-    <td>{props.loan.userName}</td>
-    <td>{props.loan.userSurname}</td>
-    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`}>{props.loan.userEmail}</a></td>
+    <td>{(props.loan.userName).toUpperCase()}</td>
+    <td>{(props.loan.userSurname).toUpperCase()}</td>
+    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`} className = 'btn btn-light btn-lg'>{props.loan.userEmail}</a></td>
     <td>
-      <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>ELIMINA</a>
+      <button type="button" id = "delete2" className="btn btn-danger" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>ELIMINA</button>
     </td>
   </tr>
 )
@@ -51,10 +51,10 @@ const minDate = new Date(new Date().getFullYear(), new Date().getMonth());
 
 // vista del prestito primo della coda
 const Loan1 = props => (
-  <tr>
-    <td>{props.loan.userName}</td>
-    <td>{props.loan.userSurname}</td>
-    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`}>{props.loan.userEmail}</a></td>
+  <tr className="bg-warning">
+    <td>{(props.loan.userName).toUpperCase()}</td>
+    <td>{(props.loan.userSurname).toUpperCase()}</td>
+    <td><a href={`mailto:${props.loan.userEmail}?body=ciao, ho confermato il tuo prestito, dobbiamo accordarci sui termini di scambio...`} className = 'btn btn-warning btn-lg'>{props.loan.userEmail}</a></td>
     <td>
     <div>
         <DateRangePickerComponent placeholder="Enter Date Range"
@@ -78,7 +78,7 @@ const Loan1 = props => (
         }
         }
         ></DateRangePickerComponent>
-        | <a href="#" onClick={() => { props.deleteLoan(props.loan._id,props.loan.book) }}>ELIMINA</a>
+        <button type="button" id = "delete1" className="btn btn-danger" onClick={() => { props.deleteLoan(props.loan._id) }}>ELIMINA</button>
       </div>
     </td>
   </tr>
@@ -104,9 +104,9 @@ class Book extends Component {
   }
 
   //metodo chiamato all'inizio
-  componentDidMount() {
+  async componentDidMount() {
     //libro per parametro
-    axios.get('/api/book/'+this.props.match.params.id)
+    await axios.get('/api/book/'+this.props.match.params.id)
       .then(response => {
         this.setState({
           author: response.data.author,
@@ -129,7 +129,7 @@ class Book extends Component {
       })
 
       // lista prestiti per il libro
-      axios.get('/api/loan/loanlist/'+this.props.match.params.id)
+      await axios.get('/api/loan/loanlist/'+this.state.groupId+"/"+this.props.match.params.id)
       .then(response => {
           this.setState({
             loans: (response.data).sort(function(a,b){
@@ -145,9 +145,7 @@ class Book extends Component {
 
 
   // eliminazione di un prestito
-  deleteLoan(id,bookid) {
-    
-    console.log(bookid);
+  deleteLoan(id) {
     axios.delete('/api/loan/'+id)
       .then(response => { console.log(response.data);
         
@@ -162,8 +160,8 @@ class Book extends Component {
   loanList() {
     return this.state.loans.map(currentloan => {
 
-      if (this.state.loans.indexOf(currentloan) == 0)    {
-        if(currentloan.accepted == false)
+      if (this.state.loans.indexOf(currentloan) === 0)    {
+        if(currentloan.accepted === false)
           return <Loan1 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
         else
         return <Loan3 loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
@@ -180,57 +178,100 @@ class Book extends Component {
     history.push(`/editBook/${this.props.match.params.id}`); // schermata editBook
   };
 
-  //eliminare libro
+  //eliminare libro, TODO: eliminare anche le prenotazioni
   deleteClick = (event) => {
     const groupId = this.state.groupId
-    const { history } = this.props;
+    const { history } = this.props;      
+
+    this.state.loans.forEach(loan => {
+      // cancello ogni loan
+      axios.delete('/api/loan/'+loan._id)
+      .then(response => { console.log(response.data);
+        
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);        
+      })     
+    })
+    
     axios.delete('/api/book/'+this.props.match.params.id)
     .then(response => { console.log(response.data)});
+
     history.goBack();//schermata biblioteca
+    
   };
 
   // aggiungi prestiti
   loanClick = async (event) => {
     const user = localStorage.getItem("user"); // l'utente logato al momento
-    const loan = {
-      book: this.props.match.params.id, // id dall'URL
-      ownerId: this.state.userId,
-      userId: JSON.parse(user).id,
-      userName: "",
-      userSurname: "",
-      userEmail: "",
-      reqDate: new Date(), 
-      
+
+    const flag = function (loans, userId){
+      let f = false;
+      loans.forEach(loan => {
+        if(loan.userId == userId)
+          f = true;
+      })
+      return f;
     }
 
-    await axios.get('/api/users/'+loan.userId+'/profile')
-        .then(response => {
-          
-          loan.userName = response.data.given_name
-          loan.userSurname =  response.data.family_name
-          loan.userEmail = response.data.email           
-          
-       
-      }).catch(function (error) {
+    // CONTROLLO SE HO GIA' PRENOTATO QUEL LIBRO
+    if(flag(this.state.loans,JSON.parse(user).id)){
+        // avvenuta già la prenotazione
+        console.log("prenotazione già effettuata")
+    }
+    else{
+      const loan = {
+        book: this.props.match.params.id, // id dall'URL
+        bookName: this.state.title,
+        ownerId: this.state.userId,
+        userId: JSON.parse(user).id,
+        groupId: this.state.groupId,
+        userName: "",
+        userSurname: "",
+        userEmail: "",
+        reqDate: new Date(), 
+        
+      }
+
+      await axios.get('/api/users/'+loan.userId+'/profile')
+          .then(response => {
+            
+            loan.userName = response.data.given_name
+            loan.userSurname =  response.data.family_name
+            loan.userEmail = response.data.email           
+            
+        
+        }).catch(function (error) {
+          console.log(error);        
+        })
+
+      console.log(loan)
+      await axios.post('/api/loan/add',loan)
+      .then(response => { console.log(response.data)})
+      .catch(function (error) {
         console.log(error);        
       })
-
-    console.log(loan)
-    await axios.post('/api/loan/add',loan)
-    .then(response => { console.log(response.data)})
-    .catch(function (error) {
-      console.log(error);        
-    })
-
-    window.location.reload();
+    }
   
   };
 
   // funzione booleana che mi dice se l'utente corrente è il proprietario o meno
   current_user = ()=>{
     const user = localStorage.getItem("user");
-    return JSON.parse(user).id == this.state.userId;
+    return JSON.parse(user).id === this.state.userId;
   } 
+
+  current_loan = ()=>{
+    let flag = false;
+    this.state.loans.forEach((loan)=>{
+      if(loan.accepted == true )
+        flag = true;
+    })
+    if (flag == true)
+      return <p className="badge bg-danger text-wrap  text-white fs-2">NON DISPONIBILE AL MOMENTO</p>
+    else return <p className="badge bg-success text-wrap  fs-2">DISPONIBILE</p>;    
+  }
 
   render() {  
     const { history, language } = this.props; 
@@ -251,6 +292,13 @@ class Book extends Component {
         <div id="activityMainContainer">
             <div className="row no-gutters" style={rowStyle}>
               <div className="activityInfoHeader">TITOLO DEL LIBRO: {(this.state.title).toUpperCase()}</div>
+
+              {this.current_user() ?(
+            <div className="row no-gutters" style={buttonStyle}  ></div>
+            ):(
+            <div className="col-1-10" style={rowStyle}>{this.current_loan()}</div>       
+            )}
+
             </div>
             {this.state.author && (
               <div className="row no-gutters" style={rowStyle}>
@@ -287,8 +335,8 @@ class Book extends Component {
                 </div>
                 <div className="col-9-10">
                   <div className="activityInfoDescription">
-                    <p className="activityInfoDescription">Proprietario: {this.state.name}  {this.state.surname}</p>
-                    <p className="activityInfoDescription">Email: <a href={`mailto:${this.state.email}`}>{this.state.email}</a></p>
+                    <p className="activityInfoDescription">Proprietario: {(this.state.name).toUpperCase()}  {(this.state.surname).toUpperCase()}</p>
+                    <p className="activityInfoDescription">Email: <a href={`mailto:${this.state.email}`} className = 'btn btn-light btn-lg'>{this.state.email}</a></p>
                   </div>
                 </div>
               </div>
@@ -297,14 +345,14 @@ class Book extends Component {
             {this.current_user() ?(
             <div className="row no-gutters" style={buttonStyle}  >
             <div className="col-1-10"></div>            
-            <button onClick={this.editClick} className="btn btn-primary col-1-10" >MODIFICA</button>
+            <button id = "edit" onClick={this.editClick} className="btn btn-primary col-1-10" >MODIFICA</button>
             <div className="col-1-10"></div>
-            <button onClick={this.deleteClick} className="btn btn-danger col-1-10" >CANCELLA</button>
+            <button id = "delete" onClick={this.deleteClick} className="btn btn-danger col-1-10" >CANCELLA</button>
             </div>
             ):(
             <div className="row no-gutters" style={buttonStyle}  >
             <div className="col-1-10"></div>
-            <button onClick={this.loanClick} className="btn btn-success col-1-10" >PRENOTA</button>
+            <button id = "loan" onClick={this.loanClick} className="btn btn-success col-1-10" >PRENOTA</button>    
             </div>
             )}
             
@@ -312,21 +360,29 @@ class Book extends Component {
         <div id = "end" style={rowStyle}>   
 
         {this.current_user() ?(
-        <div id = "end" style={rowStyle}>       
+        <div className="container-sm" style={rowStyle}>      
+        <div className="row no-gutters" style={rowStyle}  >
+          </div> 
         
-        <table className="table">
-          <thead className="thead-light">
+        <table className="table table-hover">
+          <thead className="thead-dark">
             <tr>
               <th>NOME</th>
               <th>COGNOME</th>
               <th>EMAIL</th>
+              <th>ACCETTA PRENOTAZIONE</th>
             </tr>
           </thead>
           <tbody>
             { this.loanList() }
           </tbody>
         </table>
-        </div>):(<div></div>)}             
+        <div className="row no-gutters" style={rowStyle}  >
+          </div> 
+        </div>):(<div className="row no-gutters" style={rowStyle}>
+        <div className="col-1-10" style={rowStyle}></div>
+                
+        </div>)}             
         
         </div>
     </div>

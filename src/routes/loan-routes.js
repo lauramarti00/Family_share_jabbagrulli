@@ -26,10 +26,19 @@ let Loan = require('../models/loan')
 
 
 // lista di tutti i prestiti per libro
-router.route('/loanlist/:book').get((req, res) => {
+router.route('/loanlist/:groupId/:book').get((req, res) => {
   Loan.find()
     .then(loans => res.json(loans.filter(function (loan) {
-      return loan.book == req.params.book
+      return loan.book === req.params.book && loan.groupId === req.params.groupId
+    })))
+    .catch(err => res.status(400).json('Error: ' + err))
+})
+
+// lista di tutti i prestiti per utente che ha richiesto il prestito
+router.route('/loanlistgroupId/:groupId').get((req, res) => {
+  Loan.find()
+    .then(loans => res.json(loans.filter(function (loan) {
+      return loan.groupId === req.params.groupId
     })))
     .catch(err => res.status(400).json('Error: ' + err))
 })
@@ -53,8 +62,10 @@ router.route('/update/:id').post((req, res) => {
   Loan.findById(req.params.id)
     .then(Loan => {
         Loan.book = req.body.book
+        Loan.bookName = req.body.bookName
         Loan.ownerId = req.body.ownerId
         Loan.userId = req.body.userId
+        Loan.groupId = req.body.groupId
         Loan.reqDate = req.body.reqDate
         Loan.start = req.body.start
         Loan.end = req.body.end
@@ -75,12 +86,14 @@ router.route('/update/:id').post((req, res) => {
 // aggiungere prestito (non solo dato user id e libro ma devo avere tutto, tranne i bool che li setto inizialmente a false (CHIEDERE A VICKY))
 router.route('/add').post( (req, res) => {     
   const book = req.body.book;
+  const bookName = req.body.bookName;
   const ownerId = req.body.ownerId;
   const userId = req.body.userId;
-  const userName = req.body.userName
-  const userSurname = req.body.userSurname
+  const userName = req.body.userName;
+  const userSurname = req.body.userSurname;
   const userEmail = req.body.userEmail
   const reqDate = req.body.reqDate;
+  const groupId = req.body.groupId;
   
   
   // li ho dichiarati lo stesso anche se undefined perchè al costruttore devo passare i parametri in ordine
@@ -93,8 +106,10 @@ router.route('/add').post( (req, res) => {
 
   const newLoan = new Loan ({
     book,
+    bookName,
     ownerId,
     userId,
+    groupId,
     userName,
     userSurname,
     userEmail,

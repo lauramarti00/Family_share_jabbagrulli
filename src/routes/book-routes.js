@@ -11,11 +11,11 @@ router.route('/list/:groupId').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err))
 })
 
-//lista libri del proprietario
-router.route('/listperowner/:userId').get((req, res) => {
+//lista libri del proprietario e gruppo
+router.route('/listperowner/:groupId/:userId').get((req, res) => {
   Book.find()// ritorna una lista di tutti gli elementi
     .then(books => res.json(books.filter(function (book) {
-      return (book.userId === req.params.userId)
+      return (book.userId === req.params.userId &&  book.groupId === req.params.groupId)
     })))// ritorna in json format
     .catch(err => res.status(400).json('Error: ' + err))
 })
