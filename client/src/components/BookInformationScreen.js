@@ -221,17 +221,17 @@ class Book extends Component {
   loanClick = async (event) => {
     const user = localStorage.getItem("user"); // l'utente logato al momento
 
-    const flag = function (loans, userId){
+    const flag = function (loans){
       let f = false;
       loans.forEach(loan => {
-        if(loan.userId == userId)
+        if(loan.userId === JSON.parse(user).id)
           f = true;
       })
       return f;
     }
 
     // CONTROLLO SE HO GIA' PRENOTATO QUEL LIBRO TODO: NON FUNZIONA
-    if(flag(this.state.loans,JSON.parse(user).id)){
+    if(flag(this.state.loans)){
         // avvenuta già la prenotazione
         alert("prenotazione già effettuata");
     }
@@ -267,6 +267,7 @@ class Book extends Component {
       .catch(function (error) {
         console.log(error);        
       })
+      window.location.reload();
       alert("prenotazione effettuata");
     }
   

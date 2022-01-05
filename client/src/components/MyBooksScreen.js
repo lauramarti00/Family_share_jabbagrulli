@@ -7,20 +7,6 @@ import withLanguage from "./LanguageContext";
 import axios from 'axios';
 
 
-/*const MyBooksScreen = ({ language, history }) => {
- 
-  return (
-    <div id="createActivityContainer">
-      <BackNavigation
-        title={"I miei Libri"}
-        onClick={() => history.goBack()}
-      />
-      <MyBooks />
-    </div>
-  );
-};*/
-
-
 //barra di navigazione 
 const BackNavigation = ({ onClick, title }) => {
     return (
@@ -39,8 +25,9 @@ const BackNavigation = ({ onClick, title }) => {
 //html che verrà chiamato ogni volta in base agli elementi della lista
 const Book = props => (
   <tr>
+    
+    <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.book._id) }} >{props.book.title}</button></td>
     <td>{props.book.author}</td>
-    <td>{props.book.title}</td>
     <td>{props.book.accepted}</td>
     
   </tr>
@@ -48,14 +35,14 @@ const Book = props => (
 
 const LoanAccepted = props => (
   <tr>
-    <td>{props.loan.bookName}</td>
+    <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
     <td>ACCETTATO</td>
     <td>{new Date(props.loan.start).toLocaleDateString()} - {new Date(props.loan.end).toLocaleDateString()}</td>
   </tr>
 )
 const LoanNotAccepted = props => (
   <tr>
-    <td>{props.loan.bookName}</td>
+    <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
     <td>NON ACCETTATO</td>
     <td> 
     <button type="button" id = "delete" className="btn btn-danger" onClick={() => { props.deleteLoan(props.loan._id) }}>
@@ -66,7 +53,7 @@ const LoanNotAccepted = props => (
 
 const LoanAnnuled = props => (
   <tr>
-    <td>{props.loan.bookName}</td>
+    <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
     <td>PRESTITO ANNULLATO</td>
     <td> 
     <button type="button" id = "delete" className="btn btn-warning" onClick={() => { props.deleteLoan(props.loan._id) }}>
@@ -124,6 +111,12 @@ class MyBooksScreen extends React.Component {
       alert("Hai eliminato la richiesta");
   }
 
+  //mi reinderizza alla pagina informazioni del libro
+  handleBookClick = (BookId) => {
+    const { history } = this.props;
+    // const { pathname } = history.location;
+    history.push(`/infoBook/${BookId}`); // new vicky, porta alla scheda informazioni libro
+  };
 
   //metodo per creare la lista in html
   bookList() {
@@ -132,16 +125,19 @@ class MyBooksScreen extends React.Component {
     return this.state.mybooks.map(currentbook => {
       loans.forEach(loan => {
         if(loan.book == currentbook._id){
+            if(loan.accepted == false){
+              currentbook.accepted = "PRENOTATO MA NON CONFERMATO";
+            }
+            else{
             currentbook.accepted = "PRENOTATO dal "+new Date(loan.start).toLocaleDateString()+" al "+new Date(loan.end).toLocaleDateString();
-            currentbook.start = loan.start;
-            currentbook.end = loan.end;
           }
+        }
         else
             currentbook.accepted = "NON PRENOTATO";
         
       })
       
-      return <Book book={currentbook} key={currentbook._id}/>;
+      return <Book book={currentbook}  handleBookClick={this.handleBookClick}  key={currentbook._id}/>;
     })
   }
 
@@ -152,12 +148,12 @@ class MyBooksScreen extends React.Component {
       return currentloan.userId === JSON.parse(user).id
     }).map(currentloan => {
       if(currentloan.accepted == true)
-        return <LoanAccepted loan={currentloan} key={currentloan._id}/>;
+        return <LoanAccepted loan={currentloan} handleBookClick={this.handleBookClick} key={currentloan._id}/>;
       else{
         if(currentloan.current == true)
-          return <LoanNotAccepted loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+          return <LoanNotAccepted loan={currentloan} handleBookClick={this.handleBookClick} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
         else
-        return <LoanAnnuled loan={currentloan} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
+        return <LoanAnnuled loan={currentloan} handleBookClick={this.handleBookClick} deleteLoan={this.deleteLoan} key={currentloan._id}/>;
       }
 
         
@@ -187,8 +183,9 @@ class MyBooksScreen extends React.Component {
         <table className="table table-hover">
           <thead className="thead-dark">
             <tr>
-              <th scope="col">AUTORE</th>
+              
               <th scope="col">TITOLO</th>
+              <th scope="col">AUTORE</th>
               <th scope="col">PRENOTATO</th>
             </tr>
           </thead>
