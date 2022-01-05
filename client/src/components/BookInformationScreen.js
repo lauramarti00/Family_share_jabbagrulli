@@ -99,6 +99,7 @@ class Book extends Component {
       name:'',
       surname:'',
       email:'',
+      thumbnail_path:'',
       loans: []
     }
   }
@@ -113,7 +114,9 @@ class Book extends Component {
           title: response.data.title,
           description: response.data.description,
           userId: response.data.userId,
-          groupId: response.data.groupId,            
+          groupId: response.data.groupId,  
+          thumbnail_path: response.data.thumbnail_path
+          
         })   
         axios.get('/api/users/'+response.data.userId+'/profile')
         .then(response => {
@@ -402,6 +405,26 @@ class Book extends Component {
         </div>)}             
         
         </div>
+        <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary">World</strong>
+          <h3 class="mb-0">Featured post</h3>
+          <div class="mb-1 text-muted">Nov 12</div>
+          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+        <img
+        src={this.state.thumbnail_path}
+        //className={className}
+        //style={style}
+        alt="avatar"
+      />
+
+        </div>
+      </div>
+    </div>
     </div>
     </React.Fragment>
     )
