@@ -53,6 +53,11 @@ const StartUpGuide = Loadable({
   loader: () => import("./components/StartUpGuide"),
   loading: () => Loading,
 });
+/*Carico info Biblioteca*/
+const LibraryGuide = Loadable({
+  loader: () => import("./components/LibraryGuide"),
+  loading: () => Loading,
+});
 const FaqsScreen = Loadable({
   loader: () => import("./components/FaqsScreen"),
   loading: () => Loading,
@@ -417,6 +422,12 @@ class App extends React.Component {
                 exact
                 path="/groups/:groupId/info/start-up-guide"
                 component={StartUpGuide}
+              />
+              <PrivateRoute
+                /*route privata per la guida della Biblioteca*/
+                exact
+                path="/groups/:groupId/info/library-up-guide"
+                component={LibraryGuide}
               />
               <PrivateRoute
                 exact

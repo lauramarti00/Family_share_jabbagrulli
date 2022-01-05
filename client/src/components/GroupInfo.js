@@ -244,6 +244,7 @@ class GroupInfo extends React.Component {
   /*funzione che serve a generare il blocco nella pagina info con "Non sai da dove iniziare?"*/
   render() {
     const { language, match } = this.props;
+    const rowStyle = { minHeight: "5rem" };
     const {
       fetchedGroupInfo,
       group,
@@ -284,18 +285,18 @@ class GroupInfo extends React.Component {
               }}
             />
           )}
-          {/* permette di creare una nuova info dove mi è possibile creare la guida per la biblioteca
+          <div  style={rowStyle}></div>
           {userAccepted && groupAccepted && (
             <Card
               card={{
-                cardHeader: texts.startGuideHeader,
-                cardInfo: texts.startGuideInfo,
+                cardHeader: "Come funziona la Biblioteca?",
+                cardInfo: "Qui ti spieghiamo come usare questa funzione!",
                 learnMore: true,
-                link: `${match.url}/start-up-guide`,
+                link: `${match.url}/library-up-guide`,
               }}
             />
           )}
-            */}
+            
           {!(userAccepted && groupAccepted) && (
             <CopyToClipboard text={contactInfo}>
               <button
