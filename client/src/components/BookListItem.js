@@ -61,7 +61,6 @@ class BookListItem extends React.Component {
               <i className="fas fa-user-check" />
             </div>
           )}
-          {/*TODO MODIFICARE PARTE CSS DA ROTONDO A QUADRATO*/}
           <div className="col-2-10">
           <Avatar
             thumbnail={activity.thumbnail_path}

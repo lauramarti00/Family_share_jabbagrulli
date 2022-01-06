@@ -177,7 +177,7 @@ class CreateBookStepper extends React.Component {
                     color="primary"
                     onClick={this.handleContinue}//funzione che invia dati al db
                     >
-                    {/*TODO editare*/}
+                    {/*Nome bottone*/}
                     SALVA                          
                   </Button>                        
                 </div>
