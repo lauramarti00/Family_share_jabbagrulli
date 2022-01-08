@@ -166,7 +166,7 @@ class CreateBookInformation extends React.Component {
               <div className="img">
                 <img
                   src={path(image, ["path"])}
-                  alt="user profile logo"
+                  alt="Book image"
                   className="horizontal square right"
                 />
               </div>

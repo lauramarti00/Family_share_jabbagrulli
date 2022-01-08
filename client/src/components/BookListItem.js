@@ -29,6 +29,8 @@ class BookListItem extends React.Component {
 
   async componentDidMount() {
     const { activity } = this.state;
+    console.log("attività")
+    console.log(activity.thumbnail_path)
     //const userId = JSON.parse(localStorage.getItem("books")).id;
     const { groupId } = this.props;
     //const activityId = activity.activity_id;
@@ -63,7 +65,7 @@ class BookListItem extends React.Component {
           )}
           <div className="col-2-10">
           <Avatar
-            thumbnail={activity.thumbnail_path}
+            thumbnail={(activity.thumbnail_path != undefined)? activity.thumbnail_path : "/images/books/no-book.jpg" }
             className="center"
           />
         </div>

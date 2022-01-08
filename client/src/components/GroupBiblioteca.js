@@ -203,6 +203,7 @@ class GroupBiblioteca extends React.Component {
     return (
       <div style={{ paddingBottom: "6rem" }}>
         {/*TODO vedere cosa fa sta roba*/}
+        {/*
         <ActivityOptionsModal
           isOpen={optionsModalIsOpen}
           options={options}
@@ -212,7 +213,7 @@ class GroupBiblioteca extends React.Component {
           title={texts.exportConfirm}
           isOpen={confirmDialogIsOpen}
           handleClose={this.handleConfirmDialogClose}
-        />
+        />*/}
         <div className="row no-gutters" id="groupMembersHeaderContainer">
           <div className="col-2-10">
             <button
@@ -312,7 +313,6 @@ class GroupBiblioteca extends React.Component {
                 color="primary"
                 aria-label="myBooks"
                 className={classes.myBooks}
-                //TODO io lo farei minuscolo es: mybooks
                 onClick={() => this.add("myBooks")}//attacca all'url il testo tra apici
               >
                 <i className="fas fa-calendar" />
@@ -327,13 +327,6 @@ class GroupBiblioteca extends React.Component {
               {this.renderActivities()}
             </div>
           )}
-          {/*
-          {fetchedData && plans.length > 0 && (
-            <div id="groupActivitiesContainer" className="horizontalCenter">
-              <h1 className="">{texts.plansHeader}</h1>
-              {this.renderPlans()}
-            </div>
-          )}*/}
         </div>
       </div>
     );

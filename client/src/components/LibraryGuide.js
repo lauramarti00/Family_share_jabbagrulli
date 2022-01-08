@@ -4,9 +4,9 @@ import Texts from "../Constants/Texts";
 import BackNavigation from "./BackNavigation";
 import withLanguage from "./LanguageContext";
 
-const StartUpGuide = ({ language, history }) => {
+const LibraryGuide = ({ history }) => {
   const renderGuide = () => {
-    const { guide } = Texts[language].startUpGuide;
+    const { guide } = Texts.LibraryGuide;
     return guide.map((instruction, index) => (
       <li key={index} className="row no-gutters" id="instructionContainer">
         <div className="col-2-10">
@@ -21,7 +21,7 @@ const StartUpGuide = ({ language, history }) => {
       </li>
     ));
   };
-  const texts = Texts[language].startUpGuide;
+  const texts = Texts.sLibraryGuide;
   return (
     <React.Fragment>
       <BackNavigation
@@ -33,9 +33,9 @@ const StartUpGuide = ({ language, history }) => {
   );
 };
 
-export default withLanguage(StartUpGuide);
+export default withLanguage(LibraryGuide);
 
-StartUpGuide.propTypes = {
+LibraryGuide.propTypes = {
   history: PropTypes.object,
-  language: PropTypes.string,
+  
 };
