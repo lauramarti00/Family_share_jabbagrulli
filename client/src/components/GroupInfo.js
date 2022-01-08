@@ -292,7 +292,7 @@ class GroupInfo extends React.Component {
                 cardHeader: "Come funziona la Biblioteca?",
                 cardInfo: "Qui ti spieghiamo come usare questa funzione!",
                 learnMore: true,
-                link: `${match.url}/library-up-guide`,
+                link: `${match.url}/library-guide`,
               }}
             />
           )}

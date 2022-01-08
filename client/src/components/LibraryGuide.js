@@ -5,8 +5,8 @@ import BackNavigation from "./BackNavigation";
 import withLanguage from "./LanguageContext";
 
 const LibraryGuide = ({ history }) => {
-  const renderGuide = () => {
-    const { guide } = Texts.LibraryGuide;
+  const renderGuida = () => {
+    const { guide } = Texts['en'].libraryGuide;
     return guide.map((instruction, index) => (
       <li key={index} className="row no-gutters" id="instructionContainer">
         <div className="col-2-10">
@@ -21,14 +21,13 @@ const LibraryGuide = ({ history }) => {
       </li>
     ));
   };
-  const texts = Texts.sLibraryGuide;
   return (
     <React.Fragment>
       <BackNavigation
-        title={texts.backNavTitle}
+        title="Guida Biblioteca"
         onClick={() => history.goBack()}
       />
-      <ul>{renderGuide()}</ul>
+      <ul>{renderGuida()}</ul>
     </React.Fragment>
   );
 };
@@ -37,5 +36,4 @@ export default withLanguage(LibraryGuide);
 
 LibraryGuide.propTypes = {
   history: PropTypes.object,
-  
 };

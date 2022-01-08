@@ -426,7 +426,7 @@ class App extends React.Component {
               <PrivateRoute
                 /*route privata per la guida della Biblioteca*/
                 exact
-                path="/groups/:groupId/info/library-up-guide"
+                path="/groups/:groupId/info/library-guide"
                 component={LibraryGuide}
               />
               <PrivateRoute
