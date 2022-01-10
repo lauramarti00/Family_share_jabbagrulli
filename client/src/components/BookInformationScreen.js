@@ -354,8 +354,9 @@ class Book extends Component {
             </div>
             <div className="col-6-10">
             <img
-              src={this.state.thumbnail_path}
+              src= {(this.state.thumbnail_path != undefined) ? this.state.thumbnail_path : "/images/books/no-book.jpg" }
               alt="avatar"
+              className='NoPhotoBook'
             />
             </div>
             </div>

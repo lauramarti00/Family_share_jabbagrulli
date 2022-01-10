@@ -3416,3 +3416,8 @@ a:active {
 }
 
 /*CREATE ACTIVITY SCREEN END*/
+
+.NoPhotoBook{
+  height: 200px;
+  width: 200px;
+}
