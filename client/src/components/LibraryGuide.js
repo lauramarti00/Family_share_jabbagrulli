@@ -9,7 +9,7 @@ const LibraryGuide = ({ history }) => {
     const { guide } = Texts['en'].libraryGuide;
     return guide.map((instruction, index) => (
       <li key={index} className="row no-gutters" id="instructionContainer">
-        <div className="col-2-10">
+        <div className="col-2-10 ">
           <h2 className="indexCircle center">{index + 1}</h2>
         </div>
         <div className="col-8-10">
