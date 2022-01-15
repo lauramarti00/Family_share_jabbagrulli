@@ -52,7 +52,7 @@ const styles = {
   },
 };
 
-/*TODO fetcha i libri che si ha preso in prestito*/
+
 const fetchBook = () => {
   return axios
     //.get(`/api/groups/${groupId}/activities`) //api/book
@@ -96,7 +96,7 @@ class MyBooks extends React.Component {
      /*  plans, */
     });
   }
-  /* TODO: rimuovere if da path path a fine applicazione*/
+ 
   /*serve per aggiungere accedere alla pagina di aggiungi libro vedi CreateBookStepper e Information*/
  /*  add = (type) => {
     const { history } = this.props;
@@ -142,7 +142,7 @@ class MyBooks extends React.Component {
     );
   }; */
 
-  //TODO: check se serve o no
+ 
   handleModalOpen = () => {
     this.setState({ optionsModalIsOpen: true });
   };
@@ -176,7 +176,7 @@ class MyBooks extends React.Component {
     history.push(`/groups/${groupId}/activities/pending`);
   }; */
 
-  //TODO: vedere se serve
+  
   handleConfirmDialogOpen = () => {
     this.setState({ confirmDialogIsOpen: true, optionsModalIsOpen: false });
   };
@@ -217,7 +217,6 @@ class MyBooks extends React.Component {
                         card={{
                         cardHeader: "Libri Caricati",
                         learnMore: true,
-                        /*TODO reinderizza alla pagina con la lista dei libri messi in prestito*/
                         link: `${history}`,  
                         }
                     }

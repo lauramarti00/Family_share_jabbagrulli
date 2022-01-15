@@ -117,6 +117,7 @@ class Book extends Component {
           groupId: response.data.groupId,     
           thumbnail_path: response.data.thumbnail_path    
         })   
+        // utente proprietario del libro
         axios.get('/api/users/'+response.data.userId+'/profile')
         .then(response => {
           this.setState({
@@ -159,7 +160,7 @@ class Book extends Component {
       
   }
 
-  // annullamento di un prestito TODO: 
+  // annullamento di un prestito 
   removeLoan(id) {
     axios.post('/api/loan/current/'+id)
       .then(response => { console.log(response.data);
@@ -195,7 +196,7 @@ class Book extends Component {
     history.push(`/editBook/${this.props.match.params.id}`); // schermata editBook
   };
 
-  //eliminare libro, TODO: eliminare anche le prenotazioni
+  //eliminare libro, ma se il libro è in prestito non lo cancella
   deleteClick = (event) => {
     const groupId = this.state.groupId
     const { history } = this.props;      
@@ -228,6 +229,7 @@ class Book extends Component {
   loanClick = async (event) => {
     const user = localStorage.getItem("user"); // l'utente logato al momento
 
+    // funzione che controlla se l'utente si è già prenotato
     const flag = function (loans){
       let f = false;
       loans.forEach(loan => {
@@ -237,7 +239,6 @@ class Book extends Component {
       return f;
     }
 
-    // CONTROLLO SE HO GIA' PRENOTATO QUEL LIBRO TODO: NON FUNZIONA
     if(flag(this.state.loans)){
         // avvenuta già la prenotazione
         alert("prenotazione già effettuata");
@@ -255,7 +256,7 @@ class Book extends Component {
         reqDate: new Date(), 
         
       }
-
+      // utente che si prenota
       await axios.get('/api/users/'+loan.userId+'/profile')
           .then(response => {
             
@@ -286,6 +287,7 @@ class Book extends Component {
     return JSON.parse(user).id === this.state.userId;
   } 
 
+  // funzione che mi restitusce se il libro è disponibile o meno ( se qualcuno l'ha in prestito )
   current_loan = ()=>{
     let flag = false;
     this.state.loans.forEach((loan)=>{

@@ -4,11 +4,11 @@ const Schema = mongoose.Schema
 
 const loanSchema = new Schema({
   book: { type: String, required: true, trim: true }, // trim => cancella spazi alla fine
-  bookName: { type: String, required: true, trim: true },
+  bookName: { type: String, required: true, trim: true }, // nome del propietario del libro
   ownerId: { type: String, required: true, trim: true },
-  userId: { type: String, required: true, trim: true },
+  userId: { type: String, required: true, trim: true }, // utente che richiedere il prestito
   groupId: { type: String, required: true, trim: true },
-  userName: { type: String, required: true, trim: true },
+  userName: { type: String, required: true, trim: true }, // nome dell'utente che prende in prestito il libro
   userSurname: { type: String, required: true, trim: true },
   userEmail: { type: String, required: true, trim: true },
   // data di richiesta del prestito da parte dell'utente

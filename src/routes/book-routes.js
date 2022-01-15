@@ -96,6 +96,7 @@ const bookStorage = multer.diskStorage({
 })
 const bookUpload = multer({ storage: bookStorage, limits: { fieldSize: 52428800 } })
 
+// route per sistemare le foto
 router.post('/add', bookUpload.single('photo'), async (req, res, next) => {
   const {
     title, author, description, userId, groupId, image: imagePath

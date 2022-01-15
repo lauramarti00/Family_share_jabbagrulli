@@ -33,6 +33,7 @@ const Book = props => (
   </tr>
 )
 
+// vista prestito accettato
 const LoanAccepted = props => (
   <tr>
     <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
@@ -40,6 +41,7 @@ const LoanAccepted = props => (
     <td>{new Date(props.loan.start).toLocaleDateString()} - {new Date(props.loan.end).toLocaleDateString()}</td>
   </tr>
 )
+//vista prestito non accetato
 const LoanNotAccepted = props => (
   <tr>
     <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
@@ -50,7 +52,7 @@ const LoanNotAccepted = props => (
     </td>
   </tr>
 )
-
+// vista prestito annullato
 const LoanAnnuled = props => (
   <tr>
     <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
@@ -80,14 +82,13 @@ class MyBooksScreen extends React.Component {
     const user = localStorage.getItem("user");
     await axios.get('/api/book/listperowner/'+this.props.match.params.groupId+"/"+JSON.parse(user).id)
       .then(response => {
-        // TODO: per ogni libro dire se è stato prenotato
+        //per ogni libro dire se è stato prenotato
         this.setState({ mybooks: response.data })
       })
       .catch((error) => {
         console.log(error);
       })
 
-      //TODO SISTEMARE
      await axios.get('/api/loan/loanlistgroupId/'+this.props.match.params.groupId)
       .then(response => {
         this.setState({ loanbooks: response.data})
@@ -141,6 +142,7 @@ class MyBooksScreen extends React.Component {
     })
   }
 
+  //lista di prestiti
   loanList() {
     const loans = (this.state.loanbooks)
     const user = localStorage.getItem("user");

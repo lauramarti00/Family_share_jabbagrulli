@@ -76,7 +76,7 @@ class CreateBookStepper extends React.Component {
     const { match,} = this.props;
     const { groupId } = match.params;
     const { information,} = this.state;
-    const userId = JSON.parse(localStorage.getItem("user")).id;// TODO quando metto il propietario, da vedere
+    const userId = JSON.parse(localStorage.getItem("user")).id;
     //console.log('DEBUG FINALE DATABASE')
     //console.log(information.image)
     //console.log(information.file)
