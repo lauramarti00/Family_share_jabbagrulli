@@ -119,12 +119,12 @@ const CreateBookScreen = Loadable({
   loader: () => import("./components/CreateBookScreen"),
   loading: () => Loading,
 });
-// new vicky
+// pagina informazioni libri
 const BookInformationScreen = Loadable({
   loader: () => import("./components/BookInformationScreen"),
   loading: () => Loading,
 });
-//bae (vicky ti uccido)
+// pagina lista libri e prestiti
 const MyBooksScreen = Loadable({
   loader: () => import("./components/MyBooksScreen"),
   loading: () => Loading,
@@ -178,14 +178,19 @@ const SignUpScreen = Loadable({
   loading: () => Loading,
 });
 
+// pagina test
 const CreateBookScreenVicky = Loadable({
   loader: () => import("./components/CreateBookScreenVicky"),
   loading: () => Loading,
 });
+
+// pagina modifica libro
 const EditBookScreen = Loadable({
   loader: () => import("./components/EditBookScreen"),
   loading: () => Loading,
 });
+
+// pagina test
 const CatalogoScreen = Loadable({
   loader: () => import("./components/CatalogoScreen"),
   loading: () => Loading,
@@ -270,12 +275,12 @@ class App extends React.Component {
               
               <Route path="/createBook" component={CreateBookScreenVicky} // test
                /> 
-              <Route path="/editBook/:id" component={EditBookScreen} // test
+              <Route path="/editBook/:id" component={EditBookScreen} // pagina modifica libri
               />
               <Route path="/catalogo" component={CatalogoScreen} // test
               />
 
-              <Route path="/infoBook/:id" component={BookInformationScreen} // new vicky
+              <Route path="/infoBook/:id" component={BookInformationScreen} // pagina informazioni libro
                /> 
 
               <Route

@@ -6,8 +6,9 @@ const bookSchema = new Schema({
   author: { type: String, required: true, trim: true }, // trim => cancella spazi alla fine
   title: { type: String, required: true, trim: true },
   description: { type: String, required: true },
-  userId: { type: String, required: true, trim: true }, // new vicky
-  groupId: { type: String, required: true, trim: true }, // new vicky
+  userId: { type: String, required: true, trim: true }, 
+  groupId: { type: String, required: true, trim: true }, 
+  //attributi immagini :
   path: { type: String },
   thumbnail_path: { type: String },
   book_name_path: { type: String },
