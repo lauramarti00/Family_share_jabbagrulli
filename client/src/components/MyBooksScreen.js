@@ -124,17 +124,25 @@ class MyBooksScreen extends React.Component {
     
     const loans = this.state.loanbooks
     let books = this.state.mybooks
+
+    // setto tutti i libri a non prenotato
     books.map(currentbook => {
       loans.forEach(loan => {
-        if(loan.book == currentbook._id){            
-              currentbook.accepted = "PRENOTATO MA NON CONFERMATO";                 
-        }
-        else
             currentbook.accepted = "NON PRENOTATO";        
       })
-      
-      return <Book book={currentbook}  handleBookClick={this.handleBookClick}  key={currentbook._id}/>;
     })
+
+    // se non sono accettati ma sono nella cosa metto non confermato
+    books.map(currentbook => {
+      loans.forEach(loan => {
+        if(loan.book == currentbook._id){   
+          if(loan.accepted ==false && loan.current == true)          
+              currentbook.accepted = "PRENOTATO MA NON CONFERMATO";                 
+        }      
+      })
+    })
+
+    // libro confermato il prestito
     return books.map(currentbook => {
       loans.forEach(loan => {
         if(loan.book == currentbook._id){   
