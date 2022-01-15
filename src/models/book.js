@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const bookSchema = new Schema({
   author: { type: String, required: true, trim: true }, // trim => cancella spazi alla fine
   title: { type: String, required: true, trim: true },
-  description: { type: String, required: true },
+  description: { type: String }, // non facoltativo
   userId: { type: String, required: true, trim: true }, 
   groupId: { type: String, required: true, trim: true }, 
   //attributi immagini :
