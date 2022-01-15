@@ -89,7 +89,6 @@ class GroupBiblioteca extends React.Component {
       activities: book,
     });
   }
-/* TODO: rimuovere if da path path a fine applicazione*/
   /*serve per aggiungere accedere alla pagina di aggiungi libro vedi CreateBookStepper e Information*/
   add = (type) => {
     const { history } = this.props;
@@ -120,21 +119,6 @@ class GroupBiblioteca extends React.Component {
     );
   };
 
-  /*
-  renderPlans = () => {
-    const { group, plans } = this.state;
-    const { group_id: groupId } = group;
-    return (
-      <ul>
-        {plans.map((plan, index) => (
-          <li key={index}>
-            <PlanListItem plan={plan} groupId={groupId} />
-          </li>
-        ))}
-      </ul>
-    );
-  };
-  */
 
   handleModalOpen = () => {
     this.setState({ optionsModalIsOpen: true });
@@ -183,8 +167,6 @@ class GroupBiblioteca extends React.Component {
   render() {
     const { classes, language, history, userIsAdmin } = this.props;
     const {
-      optionsModalIsOpen,
-      confirmDialogIsOpen,
       group,
       pendingActivities,
       showAddOptions,
@@ -202,18 +184,6 @@ class GroupBiblioteca extends React.Component {
     ];
     return (
       <div style={{ paddingBottom: "6rem" }}>
-        {/*TODO vedere cosa fa sta roba*/}
-        {/*
-        <ActivityOptionsModal
-          isOpen={optionsModalIsOpen}
-          options={options}
-          handleClose={this.handleModalClose}
-        />
-        <ConfirmDialog
-          title={texts.exportConfirm}
-          isOpen={confirmDialogIsOpen}
-          handleClose={this.handleConfirmDialogClose}
-        />*/}
         <div className="row no-gutters" id="groupMembersHeaderContainer">
           <div className="col-2-10">
             <button
