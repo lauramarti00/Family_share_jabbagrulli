@@ -201,26 +201,27 @@ class Book extends Component {
     const groupId = this.state.groupId
     const { history } = this.props;      
 
-    if(this.state.loans[0].accepted == true){
-      alert("Il libro è in prestito");
+    if(this.state.loans.length==0 || this.state.loans[0].accepted == false ){
+     
+     this.state.loans.forEach(loan => {
+      // cancello ogni loan
+      axios.delete('/api/loan/'+loan._id)
+      .then(response => { console.log(response.data);
+        
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);        
+      })     
+    })
+    
+    axios.delete('/api/book/'+this.props.match.params.id)
+    .then(response => { console.log(response.data)});
+
+    history.goBack();//schermata biblioteca
     }
     else{
-      this.state.loans.forEach(loan => {
-        // cancello ogni loan
-        axios.delete('/api/loan/'+loan._id)
-        .then(response => { console.log(response.data);
-          
-          window.location.reload();
-        })
-        .catch(function (error) {
-          console.log(error);        
-        })     
-      })
-      
-      axios.delete('/api/book/'+this.props.match.params.id)
-      .then(response => { console.log(response.data)});
-
-      history.goBack();//schermata biblioteca
+      alert("Il libro è in prestito");
     }
     
   };
