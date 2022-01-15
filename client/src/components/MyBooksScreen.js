@@ -33,7 +33,6 @@ const Book = props => (
   </tr>
 )
 
-// vista prestito accettato
 const LoanAccepted = props => (
   <tr>
     <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
@@ -41,7 +40,6 @@ const LoanAccepted = props => (
     <td>{new Date(props.loan.start).toLocaleDateString()} - {new Date(props.loan.end).toLocaleDateString()}</td>
   </tr>
 )
-//vista prestito non accetato
 const LoanNotAccepted = props => (
   <tr>
     <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
@@ -52,7 +50,7 @@ const LoanNotAccepted = props => (
     </td>
   </tr>
 )
-// vista prestito annullato
+
 const LoanAnnuled = props => (
   <tr>
     <td><button type="button" className="btn btn-light btn-lg" id = "book1" onClick={() => { props.handleBookClick(props.loan.book) }} >{props.loan.bookName}</button></td>
@@ -121,28 +119,34 @@ class MyBooksScreen extends React.Component {
 
   //metodo per creare la lista in html
   bookList() {
-    const loans = this.state.loanbooks
     
-    return this.state.mybooks.map(currentbook => {
+      
+    
+    const loans = this.state.loanbooks
+    let books = this.state.mybooks
+    books.map(currentbook => {
       loans.forEach(loan => {
-        if(loan.book == currentbook._id){
-            if(loan.accepted == false){
-              currentbook.accepted = "PRENOTATO MA NON CONFERMATO";
-            }
-            else{
-            currentbook.accepted = "PRENOTATO dal "+new Date(loan.start).toLocaleDateString()+" al "+new Date(loan.end).toLocaleDateString();
-          }
+        if(loan.book == currentbook._id){            
+              currentbook.accepted = "PRENOTATO MA NON CONFERMATO";                 
         }
         else
-            currentbook.accepted = "NON PRENOTATO";
-        
+            currentbook.accepted = "NON PRENOTATO";        
+      })
+      
+      return <Book book={currentbook}  handleBookClick={this.handleBookClick}  key={currentbook._id}/>;
+    })
+    return books.map(currentbook => {
+      loans.forEach(loan => {
+        if(loan.book == currentbook._id){   
+          if(loan.accepted ==true)         
+            currentbook.accepted = "PRENOTATO dal "+new Date(loan.start).toLocaleDateString()+" al "+new Date(loan.end).toLocaleDateString();              
+        }      
       })
       
       return <Book book={currentbook}  handleBookClick={this.handleBookClick}  key={currentbook._id}/>;
     })
   }
 
-  //lista di prestiti
   loanList() {
     const loans = (this.state.loanbooks)
     const user = localStorage.getItem("user");
