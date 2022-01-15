@@ -11,5 +11,4 @@ images/profiles/*
 coverage
 images/groups/*
 !images/groups/group_default_photo.png
-images/books/*
 !images/books/no-book.jpg
